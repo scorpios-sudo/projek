@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeFund - Platform Funded Trading Terdepan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #f39c12;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #27ae60;
+            --danger: #e74c3c;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .navbar {
+            background-color: var(--primary);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 100px 0;
+            margin-top: 76px;
+        }
+        
+        .section-title {
+            position: relative;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent);
+        }
+        
+        .feature-card {
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            height: 100%;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+        
+        .program-card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .program-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        .program-card .card-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .price {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary);
+            border-color: var(--secondary);
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .btn-outline-primary {
+            color: var(--secondary);
+            border-color: var(--secondary);
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-links h5 {
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .testimonial-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            height: 100%;
+        }
+        
+        .testimonial-text {
+            position: relative;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .testimonial-text:after {
+            content: '"';
+            font-size: 60px;
+            color: var(--secondary);
+            opacity: 0.2;
+            position: absolute;
+            top: -20px;
+            left: 10px;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-chart-line me-2"></i>TradeFund
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#programs">Program</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">Tentang Kami</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#how-it-works">Cara Kerja</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#faq">FAQ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Kontak</a>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-outline-light rounded-pill" href="">Login</a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-warning rounded-pill" href="daftar.html">Daftar</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">Trading Dengan Modal Kami, Raih Profit Anda</h1>
+                    <p class="lead mb-4">Bergabunglah dengan ribuat trader sukses yang telah meningkatkan karir trading mereka melalui program funded trading kami.</p>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="#" class="btn btn-light btn-lg rounded-pill px-4 py-2">Mulai Sekarang</a>
+                        <a href="#programs" class="btn btn-outline-light btn-lg rounded-pill px-4 py-2">Lihat Program</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block">
+                    <img src="Bitcoin Trading_ Leverage Up, Spot Volumes Down 40%.jpeg" alt="Trading Platform" class="img-fluid rounded-3">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-5 bg-white">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-3 col-6 mb-4 mb-md-0">
+                    <div class="stats-number">$250M+</div>
+                    <p>Dana yang Didistribusikan</p>
+                </div>
+                <div class="col-md-3 col-6 mb-4 mb-md-0">
+                    <div class="stats-number">15K+</div>
+                    <p>Trader Terdanai</p>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stats-number">$85M+</div>
+                    <p>Profit Dibagikan</p>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stats-number">98%</div>
+                    <p>Kepuasan Trader</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-6 mx-auto text-center">
+                    <h2 class="section-title">Mengapa Memilih Kami?</h2>
+                    <p>Platform funded trading terdepan dengan segala keunggulan untuk kesuksesan trading Anda</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card card h-100 border-0">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                            <h4>Profit Split hingga 90%</h4>
+                            <p>Dapatkan hingga 90% dari profit yang Anda hasilkan tanpa batasan maksimal withdrawal.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card card h-100 border-0">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon">
+                                <i class="fas fa-unlock-alt"></i>
+                            </div>
+                            <h4>Tanpa Batas Waktu</h4>
+                            <p>Trading kapan saja tanpa tekanan waktu. Fokus pada kualitas trading, bukan deadline.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card card h-100 border-0">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon">
+                                <i class="fas fa-rocket"></i>
+                            </div>
+                            <h4>Eksekusi Super Cepat</h4>
+                            <p>Teknologi terkini dengan eksekusi order tercepat dan spread kompetitif.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card card h-100 border-0">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <h4>Edukasi Premium</h4>
+                            <p>Akses ke materi edukasi, webinar, dan tools analisis terbaik untuk meningkatkan skill trading.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card card h-100 border-0">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h4>Perlindungan Balance</h4>
+                            <p>Fitur drawdown harian yang melindungi akun dari kerugian beruntun tanpa menghentikan trading.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card card h-100 border-0">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <h4>Support 24/7</h4>
+                            <p>Tim support profesional siap membantu Anda 24 jam sehari, 7 hari seminggu.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Programs Section -->
+    <section id="programs" class="py-5 bg-light">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-6 mx-auto text-center">
+                    <h2 class="section-title">Program Funded Trading</h2>
+                    <p>Pilih program yang sesuai dengan gaya trading dan experience Anda</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="program-card card h-100">
+                        <div class="card-header">
+                            <h3>Beginner</h3>
+                            <div class="price">$100</div>75%<div class="price">$25</div>
+                            <p>Modal hingga $5,000</p>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Profit Split 85%</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> 1 Fase Evaluasi</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Daily Drawdown 5%</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Support Priority</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Free Edu Materials</li>
+                            </ul>
+                        </div>
+                        <div class="card-footer bg-white border-0 text-center py-4">
+                            <a href="daftar.html" class="btn btn-primary rounded-pill px-4">Pilih Program</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="program-card card h-100">
+                        <div class="card-header">
+                            <h3>Advanced</h3>
+                            <div class="price">$91,69</div>14%<div class="price">$78,85</div>
+                            <p>Modal hingga $25,000</p>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Profit Split 85%</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> 1 Fase Evaluasi </li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Daily Drawdown 6%</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Support 24/7</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Advanced Tools</li>
+                            </ul>
+                        </div>
+                        <div class="card-footer bg-white border-0 text-center py-4">
+                            <a href="daftar.html" class="btn btn-primary rounded-pill px-4">Pilih Program</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mx-md-auto">
+                    <div class="program-card card h-100">
+                        <div class="card-header">
+                            <h3>Professional</h3>
+                            <div class="price">$244,50</div>20%<div class="price">$195,60</div>
+                            <p>Modal hingga $75,000</p>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Profit Split 90%</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Instant Funding</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Daily Drawdown 8%</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Personal Manager</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Exclusive Events</li>
+                            </ul>
+                        </div>
+                        <div class="card-footer bg-white border-0 text-center py-4">
+                            <a href="daftar.html" class="btn btn-primary rounded-pill px-4">Pilih Program</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-5">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-6 mx-auto text-center">
+                    <h2 class="section-title">Cara Kerja</h2>
+                    <p>Proses sederhana untuk menjadi funded trader</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card h-100 border-0">
+                                <div class="card-body text-center p-4">
+                                    <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
+                                        <span class="text-white fw-bold display-6">1</span>
+                                    </div>
+                                    <h4>Daftar & Pilih Program</h4>
+                                    <p>Pilih program yang sesuai dengan pengalaman dan gaya trading Anda.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card h-100 border-0">
+                                <div class="card-body text-center p-4">
+                                    <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
+                                        <span class="text-white fw-bold display-6">2</span>
+                                    </div>
+                                    <h4>Lakukan Evaluasi</h4>
+                                    <p>Tunjukkan kemampuan trading Anda dengan mencapai target profit sesuai aturan.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 mb-4 mx-md-auto">
+                            <div class="card h-100 border-0">
+                                <div class="card-body text-center p-4">
+                                    <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
+                                        <span class="text-white fw-bold display-6">3</span>
+                                    </div>
+                                    <h4>Dapatkan Akun Funded</h4>
+                                    <p>Setelah lulus evaluasi, terima akun funded dan mulai trading dengan modal kami.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-lg-6 col-md-6 mb-4">
+                            <div class="card h-100 border-0">
+                                <div class="card-body text-center p-4">
+                                    <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
+                                        <span class="text-white fw-bold display-6">4</span>
+                                    </div>
+                                    <h4>Trading & Hasilkan Profit</h4>
+                                    <p>Trading dengan modal kami dan raih profit sesuai dengan strategi Anda.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 mb-4">
+                            <div class="card h-100 border-0">
+                                <div class="card-body text-center p-4">
+                                    <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
+                                        <span class="text-white fw-bold display-6">5</span>
+                                    </div>
+                                    <h4>Dapatkan Profit Share</h4>
+                                    <p>Terima profit share Anda setiap minggu tanpa delay melalui metode pembayaran pilihan.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-6 mx-auto text-center">
+                    <h2 class="section-title">Apa Kata Trader Kami</h2>
+                    <p>Testimoni dari trader yang telah sukses dengan program funded trading kami</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-text mb-4">
+                            <p>"Sejak bergabung dengan TradeFund, saya bisa fokus pada trading tanpa khawatir tentang modal. Profit split 90% benar-benar mengubah finansial saya."</p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <img src="https://placehold.co/60x60/2c3e50/ecf0f1?text=A" alt="Avatar" class="rounded-circle me-3">
+                            <div>
+                                <h5 class="mb-0">Ahmad Santoso</h5>
+                                <p class="text-muted mb-0">Funded Trader sejak 2022</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-text mb-4">
+                            <p>"Platform yang sangat trader-friendly. Eksekusi cepat, spread ketat, dan withdrawal profit tanpa masalah. Recommended banget!"</p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <img src="https://placehold.co/60x60/2c3e50/ecf0f1?text=S" alt="Avatar" class="rounded-circle me-3">
+                            <div>
+                                <h5 class="mb-0">Sari Dewi</h5>
+                                <p class="text-muted mb-0">Funded Trader sejak 2023</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-text mb-4">
+                            <p>"Tim support sangat responsif dan helpful. Materi edukasinya juga top notch. Berkat mereka, skill trading saya meningkat signifikan."</p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <img src="https://placehold.co/60x60/2c3e50/ecf0f1?text=R" alt="Avatar" class="rounded-circle me-3">
+                            <div>
+                                <h5 class="mb-0">Rudi Hermawan</h5>
+                                <p class="text-muted mb-0">Funded Trader sejak 2022</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-5">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-6 mx-auto text-center">
+                    <h2 class="section-title">Pertanyaan Umum</h2>
+                    <p>Temukan jawaban atas pertanyaan yang sering diajukan</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <div class="accordion" id="faqAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                    Apa itu funded trading?
+                                </button>
+                            </h2>
+                            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Funded trading adalah program dimana perusahaan menyediakan modal trading untuk trader yang memiliki skill tetapi memiliki keterbatasan modal. Trader yang lolos evaluasi akan trading dengan modal perusahaan dan mendapatkan profit share dari hasil trading mereka.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                    Berapa lama proses evaluasi?
+                                </button>
+                            </h2>
+                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Proses evaluasi tidak dibatasi waktu. Anda dapat menyelesaikan fase evaluasi sesuai dengan kemampuan trading Anda. Beberapa trader menyelesaikan dalam hitungan hari, beberapa lainnya dalam minggu.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                    Apakah ada batasan strategi trading?
+                                </button>
+                            </h2>
+                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Kami mengizinkan berbagai strategi trading selama tidak menggunakan EA/robot yang mengeksploitasi latency atau teknik arbitrase. News trading diperbolehkan, dan tidak ada batasan waktu trading.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                    Kapan saya bisa melakukan withdrawal?
+                                </button>
+                            </h2>
+                            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Untuk akun funded, Anda dapat melakukan withdrawal profit share setiap minggu sekali tanpa batasan minimal. Proses withdrawal diproses dalam 1-3 hari kerja.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                                    Apa yang terjadi jika saya melanggar aturan?
+                                </button>
+                            </h2>
+                            <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Jika terjadi pelanggaran aturan, akun evaluasi akan direset dan Anda dapat memulai kembali tanpa biaya tambahan. Untuk akun funded, kami memberikan peringatan terlebih dahulu sebelum mengambil tindakan lebih lanjut.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="mb-4">Siap Menjadi Funded Trader?</h2>
+                    <p class="lead mb-4">Bergabunglah dengan komunitas trader sukses kami dan raih financial freedom melalui trading</p>
+                    <a href="daftar.html" class="btn btn-light btn-lg rounded-pill px-5 py-3">Daftar Sekarang</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h3 class="text-white mb-4"><i class="fas fa-chart-line me-2"></i>TradeFund</h3>
+                    <p>Platform funded trading terpercaya yang membantu trader berbakat untuk trading dengan modal besar tanpa risiko personal.</p>
+                    <div class="d-flex gap-3 mt-4">
+                        <a href="#" class="text-white"><i class="fab fa-facebook-f fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin-in fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-youtube fa-lg"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h5>Perusahaan</h5>
+                    <ul>
+                        <li><a href="#">Tentang Kami</a></li>
+                        <li><a href="#">Karir</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Partner</a></li>
+                        <li><a href="#">Press</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h5>Program</h5>
+                    <ul>
+                        <li><a href="#">Beginner</a></li>
+                        <li><a href="#">Advanced</a></li>
+                        <li><a href="#">Professional</a></li>
+                        <li><a href="#">Enterprise</a></li>
+                        <li><a href="#">Comparison</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h5>Dukungan</h5>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Kebijakan Privasi</a></li>
+                        <li><a href="#">Syarat & Ketentuan</a></li>
+                        <li><a href="#">Bantuan</a></li>
+                        <li><a href="#">Kontak</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 footer-links">
+                    <h5>Tools</h5>
+                    <ul>
+                        <li><a href="#">Economic Calendar</a></li>
+                        <li><a href="#">Market Analysis</a></li>
+                        <li><a href="#">Trading Calculators</a></li>
+                        <li><a href="#">MT5 Download</a></li>
+                        <li><a href="#">Learning Resources</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="mt-4 mb-4" style="border-color: rgba(255,255,255,0.1)">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">&copy; 2025 TradeFund. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="mb-0">Terdaftar dan diawasi oleh: <a href="https://bappebti.go.id/" class="text-white">BAPPEBTI</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

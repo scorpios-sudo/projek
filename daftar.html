@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeFund - Platform Funded Trading Terdepan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #000000;
+            --accent: #f39c12;
+            --light: #ecf0f1;
+            --dark: #000000;
+            --success: #27ae60;
+            --danger: #e74c3c;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .navbar {
+            background-color: var(--primary);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 100px 0;
+            margin-top: 76px;
+        }
+        
+        .section-title {
+            position: relative;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent);
+        }
+        
+        .feature-card {
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            height: 100%;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+        
+        .program-card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .program-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        .program-card .card-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .price {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary);
+            border-color: var(--secondary);
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .btn-outline-primary {
+            color: var(--secondary);
+            border-color: var(--secondary);
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-links h5 {
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .testimonial-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            height: 100%;
+        }
+        
+        .testimonial-text {
+            position: relative;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .testimonial-text:after {
+            content: '"';
+            font-size: 60px;
+            color: var(--secondary);
+            opacity: 0.2;
+            position: absolute;
+            top: -20px;
+            left: 10px;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        /* Form Pendaftaran */
+        .registration-section {
+            padding: 100px 0;
+            background-color: #f8f9fa;
+        }
+        
+        .registration-form {
+            background-color: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-step {
+            display: none;
+        }
+        
+        .form-step.active {
+            display: block;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            border-radius: 5px;
+        }
+        
+        .registration-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-chart-line me-2"></i>TradeFund
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#programs">Program</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">Tentang Kami</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#how-it-works">Cara Kerja</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#faq">FAQ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Kontak</a>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-outline-light rounded-pill" href="login.html">Login</a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-warning rounded-pill" href="register.html">Daftar</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">Trading Dengan Modal Kami, Raih Profit Anda</h1>
+                    <p class="lead mb-4">Bergabunglah dengan ribuan trader sukses yang telah meningkatkan karir trading mereka melalui program funded trading kami.</p>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="register.html" class="btn btn-light btn-lg rounded-pill px-4 py-2">Mulai Sekarang</a>
+                        <a href="#programs" class="btn btn-outline-light btn-lg rounded-pill px-4 py-2">Lihat Program</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block">
+                    <img src="Cryptocurrency Market Trading Charts Stock Video Video Vintage.jpeg" alt="Trading Platform" class="img-fluid rounded-3">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Halaman Pendaftaran -->
+    <section id="registration" class="registration-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="registration-header">
+                        <h2 class="section-title">Daftar Akun TradeFund</h2>
+                        <p>Isi formulir berikut untuk bergabung dengan program funded trading kami</p>
+                    </div>
+                    
+                    <!-- Progress Bar -->
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Langkah <span id="current-step">1</span> dari 3</span>
+                            <span>33%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 33%" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="registration-form">
+                        <form id="signup-form">
+                            <!-- Step 1: Data Pribadi -->
+                            <div class="form-step active" id="step-1">
+                                <h4 class="mb-4">Informasi Pribadi</h4>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="firstName" class="form-label">Nama Depan</label>
+                                        <input type="text" class="form-control" id="firstName" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="lastName" class="form-label">Nama Belakang</label>
+                                        <input type="text" class="form-control" id="lastName" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="phone" class="form-label">Nomor Telepon</label>
+                                        <input type="tel" class="form-control" id="phone" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="country" class="form-label">Negara</label>
+                                    <select class="form-select" id="country" required>
+                                        <option value="" selected disabled>Pilih Negara</option>
+                                        <option value="Indonesia">Indonesia</option>
+                                        <option value="Malaysia">Malaysia</option>
+                                        <option value="Singapore">Singapore</option>
+                                        <option value="Other">Lainnya</option>
+                                    </select>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <button type="button" class="btn btn-primary next-btn" data-next="2">Selanjutnya</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Step 2: Data Akun -->
+                            <div class="form-step" id="step-2">
+                                <h4 class="mb-4">Informasi Akun</h4>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="username" class="form-label">Username</label>
+                                        <input type="text" class="form-control" id="username" required>
+                                        <div class="form-text">Minimal 6 karakter</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="password" class="form-label">Password</label>
+                                        <input type="password" class="form-control" id="password" required>
+                                        <div class="form-text">Minimal 8 karakter dengan huruf dan angka</div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="confirmPassword" class="form-label">Konfirmasi Password</label>
+                                    <input type="password" class="form-control" id="confirmPassword" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Platform Trading</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="platform" id="platform-mt4" value="MT4" checked>
+                                        <label class="form-check-label" for="platform-mt4">MetaTrader 4 (MT4)</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="platform" id="platform-mt5" value="MT5">
+                                        <label class="form-check-label" for="platform-mt5">MetaTrader 5 (MT5)</label>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <button type="button" class="btn btn-outline-secondary prev-btn" data-prev="1">Kembali</button>
+                                    <button type="button" class="btn btn-primary next-btn" data-next="3">Selanjutnya</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Step 3: Program & Persetujuan -->
+                            <div class="form-step" id="step-3">
+                                <h4 class="mb-4">Pilih Program & Persetujuan</h4>
+                                <div class="mb-4">
+                                    <label class="form-label">Pilih Program Funding</label>
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="program" id="program-beginner" value="beginner" checked>
+                                                <label class="form-check-label fw-bold" for="program-beginner">
+                                                    Program Beginner - Modal hingga $10,000
+                                                </label>
+                                                <p class="mb-0 text-muted">Profit Split 80%, 1 Fase Evaluasi, Biaya Pendaftaran $25</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="program" id="program-advanced" value="advanced">
+                                                <label class="form-check-label fw-bold" for="program-advanced">
+                                                    Program Advanced - Modal hingga $50,000
+                                                </label>
+                                                <p class="mb-0 text-muted">Profit Split 85%, 1 Fase Evaluasi, Biaya Pendaftaran $78,85</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="program" id="program-pro" value="professional">
+                                                <label class="form-check-label fw-bold" for="program-pro">
+                                                    Program Professional - Modal hingga $200,000
+                                                </label>
+                                                <p class="mb-0 text-muted">Profit Split 90%, Instant Funding, Biaya Pendaftaran $195,60</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                                        <label class="form-check-label" for="agreeTerms">
+                                            Saya menyetujui <a href="#">Syarat & Ketentuan</a> dan <a href="#">Kebijakan Privasi</a>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="newsletter">
+                                        <label class="form-check-label" for="newsletter">
+                                            Saya ingin menerima newsletter dan informasi promo
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex justify-content-between">
+                                    <button type="button" class="btn btn-outline-secondary prev-btn" data-prev="2">Kembali</button>
+                                    <button type="submit" class="btn btn-success">Daftar Sekarang</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h3 class="text-white mb-4"><i class="fas fa-chart-line me-2"></i>TradeFund</h3>
+                    <p>Platform funded trading terpercaya yang membantu trader berbakat untuk trading dengan modal besar tanpa risiko personal.</p>
+                    <div class="d-flex gap-3 mt-4">
+                        <a href="#" class="text-white"><i class="fab fa-facebook-f fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin-in fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-youtube fa-lg"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h5>Perusahaan</h5>
+                    <ul>
+                        <li><a href="#">Tentang Kami</a></li>
+                        <li><a href="#">Karir</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Partner</a></li>
+                        <li><a href="#">Press</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h5>Program</h5>
+                    <ul>
+                        <li><a href="#">Beginner</a></li>
+                        <li><a href="#">Advanced</a></li>
+                        <li><a href="#">Professional</a></li>
+                        <li><a href="#">Enterprise</a></li>
+                        <li><a href="#">Comparison</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h5>Dukungan</h5>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Kebijakan Privasi</a></li>
+                        <li><a href="#">Syarat & Ketentuan</a></li>
+                        <li><a href="#">Bantuan</a></li>
+                        <li><a href="#">Kontak</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 footer-links">
+                    <h5>Tools</h5>
+                    <ul>
+                        <li><a href="#">Economic Calendar</a></li>
+                        <li><a href="#">Market Analysis</a></li>
+                        <li><a href="#">Trading Calculators</a></li>
+                        <li><a href="#">MT5 Download</a></li>
+                        <li><a href="#">Learning Resources</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="mt-4 mb-4" style="border-color: rgba(255,255,255,0.1)">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">&copy; 2023 TradeFund. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="mb-0">Terdaftar dan diawasi oleh: <a href="https://bappebti.go.id/" class="text-white">BAPPEBTI</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('signup-form');
+            const formSteps = document.querySelectorAll('.form-step');
+            const nextBtns = document.querySelectorAll('.next-btn');
+            const prevBtns = document.querySelectorAll('.prev-btn');
+            const progressBar = document.querySelector('.progress-bar');
+            const currentStepElement = document.getElementById('current-step');
+            
+            let currentStep = 1;
+            
+            // Fungsi untuk update progress bar
+            function updateProgressBar() {
+                const progress = (currentStep / formSteps.length) * 100;
+                progressBar.style.width = `${progress}%`;
+                progressBar.setAttribute('aria-valuenow', progress);
+                currentStepElement.textContent = currentStep;
+                
+                // Update teks persentase
+                document.querySelector('.progress').previousElementSibling.querySelector('span:last-child').textContent = `${Math.round(progress)}%`;
+            }
+            
+            // Fungsi untuk menampilkan step yang aktif
+            function showStep(stepNumber) {
+                formSteps.forEach(step => {
+                    step.classList.remove('active');
+                });
+                document.getElementById(`step-${stepNumber}`).classList.add('active');
+                currentStep = stepNumber;
+                updateProgressBar();
+            }
+            
+            // Event listener untuk tombol next
+            nextBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const nextStep = parseInt(this.getAttribute('data-next'));
+                    
+                    // Validasi form sebelum pindah step
+                    const currentStepElement = document.getElementById(`step-${currentStep}`);
+                    const inputs = currentStepElement.querySelectorAll('input[required], select[required]');
+                    let isValid = true;
+                    
+                    inputs.forEach(input => {
+                        if (!input.value.trim()) {
+                            isValid = false;
+                            input.classList.add('is-invalid');
+                        } else {
+                            input.classList.remove('is-invalid');
+                        }
+                    });
+                    
+                    // Validasi khusus untuk password
+                    if (currentStep === 2) {
+                        const password = document.getElementById('password');
+                        const confirmPassword = document.getElementById('confirmPassword');
+                        
+                        if (password.value.length < 8) {
+                            isValid = false;
+                            password.classList.add('is-invalid');
+                        } else {
+                            password.classList.remove('is-invalid');
+                        }
+                        
+                        if (password.value !== confirmPassword.value) {
+                            isValid = false;
+                            confirmPassword.classList.add('is-invalid');
+                        } else {
+                            confirmPassword.classList.remove('is-invalid');
+                        }
+                    }
+                    
+                    if (isValid) {
+                        showStep(nextStep);
+                    }
+                });
+            });
+            
+            // Event listener untuk tombol previous
+            prevBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const prevStep = parseInt(this.getAttribute('data-prev'));
+                    showStep(prevStep);
+                });
+            });
+            
+            // Event listener untuk submit form
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validasi step terakhir
+                if (!document.getElementById('agreeTerms').checked) {
+                    alert('Anda harus menyetujui Syarat & Ketentuan untuk melanjutkan');
+                    return;
+                }
+                
+                // Simulasi pengiriman data (dalam aplikasi nyata, akan dikirim ke server)
+                alert('Pendaftaran berhasil! Anda akan segera menerima email konfirmasi.');
+                form.reset();
+                showStep(1);
+            });
+            
+            // Inisialisasi progress bar
+            updateProgressBar();
+        });
+    </script>
+</body>
+</html>
