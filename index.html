@@ -1,729 +1,572 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TradeFund - Platform Funded Trading Terdepan</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --accent: #f39c12;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-            --success: #27ae60;
-            --danger: #e74c3c;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #333;
-            background-color: #f8f9fa;
-        }
-        
-        .navbar {
-            background-color: var(--primary);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .hero-section {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 100px 0;
-            margin-top: 76px;
-        }
-        
-        .section-title {
-            position: relative;
-            padding-bottom: 15px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        
-        .section-title:after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background-color: var(--accent);
-        }
-        
-        .feature-card {
-            border-radius: 10px;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            height: 100%;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-        }
-        
-        .feature-icon {
-            font-size: 2.5rem;
-            color: var(--secondary);
-            margin-bottom: 20px;
-        }
-        
-        .program-card {
-            border: none;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-        }
-        
-        .program-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-        }
-        
-        .program-card .card-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        
-        .price {
-            font-size: 2.5rem;
-            font-weight: 700;
-        }
-        
-        .btn-primary {
-            background-color: var(--secondary);
-            border-color: var(--secondary);
-            padding: 10px 25px;
-            border-radius: 30px;
-            font-weight: 600;
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--primary);
-            border-color: var(--primary);
-        }
-        
-        .btn-outline-primary {
-            color: var(--secondary);
-            border-color: var(--secondary);
-            padding: 10px 25px;
-            border-radius: 30px;
-            font-weight: 600;
-        }
-        
-        .btn-outline-primary:hover {
-            background-color: var(--secondary);
-            color: white;
-        }
-        
-        .stats-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--secondary);
-        }
-        
-        footer {
-            background-color: var(--dark);
-            color: white;
-            padding: 60px 0 30px;
-        }
-        
-        .footer-links h5 {
-            border-bottom: 2px solid var(--accent);
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .footer-links ul {
-            list-style: none;
-            padding-left: 0;
-        }
-        
-        .footer-links li {
-            margin-bottom: 10px;
-        }
-        
-        .footer-links a {
-            color: #ddd;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .footer-links a:hover {
-            color: white;
-        }
-        
-        .testimonial-card {
-            background-color: white;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            margin-bottom: 30px;
-            height: 100%;
-        }
-        
-        .testimonial-text {
-            position: relative;
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-radius: 10px;
-        }
-        
-        .testimonial-text:after {
-            content: '"';
-            font-size: 60px;
-            color: var(--secondary);
-            opacity: 0.2;
-            position: absolute;
-            top: -20px;
-            left: 10px;
-        }
-        
-        .cta-section {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 80px 0;
-            text-align: center;
-        }
-    </style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trader X • Exchange (Binance-style)</title>
+  <!-- Chart.js + Financial for candles + (we'll draw depth ourselves) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial@3.8.0/dist/chartjs-chart-financial.min.js"></script>
+  <style>
+    :root {
+      --bg:#0a0f17; --panel:#111725; --border:#1b2333; --muted:#93a1b3; --text:#e7edf5;
+      --accent:#00e0a4; --yellow:#f0b90b; --buy:#00c389; --sell:#ff5c7a;
+    }
+    * { box-sizing:border-box }
+    body { margin:0; background:var(--bg); color:var(--text); font-family:Inter,system-ui,Arial; }
+    header { padding:12px 16px; display:flex; align-items:center; gap:12px; border-bottom:1px solid var(--border); }
+    header .brand { font-weight:900; color:var(--yellow); }
+    header .pair { color:var(--muted); font-weight:700; }
+    .tabs { margin-left:auto; display:flex; gap:8px; }
+    .tab { padding:6px 10px; border:1px solid var(--border); background:#0d1422; color:var(--muted); border-radius:8px; cursor:pointer; }
+    .tab.active { background:var(--yellow); color:#0b0f17; font-weight:800; border-color:#d19c0a; }
+
+    main.layout { display:grid; grid-template-columns: 2fr 1fr; grid-template-rows: auto auto; gap:12px; padding:12px; }
+    .panel { background:var(--panel); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+    .panel h2 { margin:0; padding:10px 12px; font-size:13px; border-bottom:1px solid var(--border); color:var(--muted); }
+    .content { padding:12px; }
+
+    .metrics { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:8px; }
+    .metric { background:#0e1422; border:1px solid #283042; border-radius:10px; padding:8px 10px; }
+    .metric .label { font-size:11px; color:var(--muted); }
+    .metric .value { font-size:16px; font-weight:800; margin-top:2px; }
+
+    .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    label { display:block; font-size:12px; color:var(--muted); margin-bottom:6px; }
+    input, select { width:100%; padding:10px; border-radius:10px; border:1px solid #283042; background:#0f1421; color:var(--text); }
+
+    .actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+    .btn { padding:10px 12px; border:none; border-radius:10px; font-weight:700; cursor:pointer; }
+    .btn.buy { background:var(--buy); color:#06140f; }
+    .btn.sell { background:var(--sell); color:#2b0a11; }
+    .btn.secondary { background:#1c2333; color:var(--text); border:1px solid #283042; }
+    .btn.ghost { background:transparent; color:var(--muted); border:1px dashed #2b3448; }
+
+    .quick { display:flex; gap:6px; margin-top:8px; }
+    .quick button { flex:1; padding:8px; background:#0f1422; color:#b9c3cf; border:1px solid #2a3246; border-radius:8px; cursor:pointer; }
+    .quick button:hover { background:var(--accent); color:#0b0f17; }
+
+    table { width:100%; border-collapse:collapse; }
+    th, td { font-size:12px; padding:6px 4px; border-bottom:1px solid var(--border); }
+    th { color:var(--muted); text-align:right; }
+    td { text-align:right; }
+    .buyText { color:#8fffd3; }
+    .sellText { color:#ffa1b3; }
+    .mid { text-align:center; padding:8px; font-weight:800; color:var(--accent); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+
+    .depthWrap { height:220px; }
+    canvas { max-height: 380px; }
+
+    @media (max-width:1000px){
+      main.layout { grid-template-columns:1fr; grid-template-rows:auto auto auto auto; }
+    }
+  </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="fas fa-chart-line me-2"></i>TradeFund
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#programs">Program</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#about">Tentang Kami</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#how-it-works">Cara Kerja</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#faq">FAQ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact">Kontak</a>
-                    </li>
-                    <li class="nav-item ms-lg-3">
-                        <a class="btn btn-outline-light rounded-pill" href="">Login</a>
-                    </li>
-                    <li class="nav-item ms-lg-2">
-                        <a class="btn btn-warning rounded-pill" href="daftar.html">Daftar</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+  <header>
+    <div class="brand">Trader X</div>
+    <div class="pair" id="currentPair">BTC/IDR</div>
+    <div class="tabs">
+      <div class="tab active" data-pair="BTC/IDR">BTC/IDR</div>
+      <div class="tab" data-pair="ETH/IDR">ETH/IDR</div>
+      <div class="tab" data-pair="DOGE/IDR">DOGE/IDR</div>
+    </div>
+  </header>
 
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <h1 class="display-4 fw-bold mb-4">Trading Dengan Modal Kami, Raih Profit Anda</h1>
-                    <p class="lead mb-4">Bergabunglah dengan ribuat trader sukses yang telah meningkatkan karir trading mereka melalui program funded trading kami.</p>
-                    <div class="d-flex flex-wrap gap-2">
-                        <a href="#" class="btn btn-light btn-lg rounded-pill px-4 py-2">Mulai Sekarang</a>
-                        <a href="#programs" class="btn btn-outline-light btn-lg rounded-pill px-4 py-2">Lihat Program</a>
-                    </div>
-                </div>
-                <div class="col-lg-6 d-none d-lg-block">
-                    <img src="Bitcoin Trading_ Leverage Up, Spot Volumes Down 40%.jpeg" alt="Trading Platform" class="img-fluid rounded-3">
-                </div>
-            </div>
+  <main class="layout">
+    <!-- Left: Chart + summary -->
+    <section class="panel">
+      <h2>Candlestick chart</h2>
+      <div class="content">
+        <div class="metrics">
+          <div class="metric"><div class="label">Last</div><div class="value" id="mLast">—</div></div>
+          <div class="metric"><div class="label">Bid</div><div class="value" id="mBid">—</div></div>
+          <div class="metric"><div class="label">Ask</div><div class="value" id="mAsk">—</div></div>
+          <div class="metric"><div class="label">Spread</div><div class="value" id="mSpread">—</div></div>
+          <div class="metric"><div class="label">24h change</div><div class="value" id="mChange">—</div></div>
+          <div class="metric"><div class="label">24h high</div><div class="value" id="mHigh">—</div></div>
+          <div class="metric"><div class="label">24h low</div><div class="value" id="mLow">—</div></div>
+          <div class="metric"><div class="label">24h vol</div><div class="value" id="mVol">—</div></div>
         </div>
+        <canvas id="candleChart"></canvas>
+      </div>
     </section>
 
-    <!-- Stats Section -->
-    <section class="py-5 bg-white">
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-md-3 col-6 mb-4 mb-md-0">
-                    <div class="stats-number">$250M+</div>
-                    <p>Dana yang Didistribusikan</p>
-                </div>
-                <div class="col-md-3 col-6 mb-4 mb-md-0">
-                    <div class="stats-number">15K+</div>
-                    <p>Trader Terdanai</p>
-                </div>
-                <div class="col-md-3 col-6">
-                    <div class="stats-number">$85M+</div>
-                    <p>Profit Dibagikan</p>
-                </div>
-                <div class="col-md-3 col-6">
-                    <div class="stats-number">98%</div>
-                    <p>Kepuasan Trader</p>
-                </div>
-            </div>
-        </div>
+    <!-- Right: Depth chart -->
+    <section class="panel">
+      <h2>Depth chart (bid/ask)</h2>
+      <div class="content depthWrap">
+        <canvas id="depthChart"></canvas>
+      </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="py-5">
-        <div class="container">
-            <div class="row mb-5">
-                <div class="col-lg-6 mx-auto text-center">
-                    <h2 class="section-title">Mengapa Memilih Kami?</h2>
-                    <p>Platform funded trading terdepan dengan segala keunggulan untuk kesuksesan trading Anda</p>
-                </div>
-            </div>
-            <div class="row g-4">
-                <div class="col-md-6 col-lg-4">
-                    <div class="feature-card card h-100 border-0">
-                        <div class="card-body text-center p-4">
-                            <div class="feature-icon">
-                                <i class="fas fa-chart-pie"></i>
-                            </div>
-                            <h4>Profit Split hingga 90%</h4>
-                            <p>Dapatkan hingga 90% dari profit yang Anda hasilkan tanpa batasan maksimal withdrawal.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="feature-card card h-100 border-0">
-                        <div class="card-body text-center p-4">
-                            <div class="feature-icon">
-                                <i class="fas fa-unlock-alt"></i>
-                            </div>
-                            <h4>Tanpa Batas Waktu</h4>
-                            <p>Trading kapan saja tanpa tekanan waktu. Fokus pada kualitas trading, bukan deadline.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="feature-card card h-100 border-0">
-                        <div class="card-body text-center p-4">
-                            <div class="feature-icon">
-                                <i class="fas fa-rocket"></i>
-                            </div>
-                            <h4>Eksekusi Super Cepat</h4>
-                            <p>Teknologi terkini dengan eksekusi order tercepat dan spread kompetitif.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="feature-card card h-100 border-0">
-                        <div class="card-body text-center p-4">
-                            <div class="feature-icon">
-                                <i class="fas fa-graduation-cap"></i>
-                            </div>
-                            <h4>Edukasi Premium</h4>
-                            <p>Akses ke materi edukasi, webinar, dan tools analisis terbaik untuk meningkatkan skill trading.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="feature-card card h-100 border-0">
-                        <div class="card-body text-center p-4">
-                            <div class="feature-icon">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <h4>Perlindungan Balance</h4>
-                            <p>Fitur drawdown harian yang melindungi akun dari kerugian beruntun tanpa menghentikan trading.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="feature-card card h-100 border-0">
-                        <div class="card-body text-center p-4">
-                            <div class="feature-icon">
-                                <i class="fas fa-headset"></i>
-                            </div>
-                            <h4>Support 24/7</h4>
-                            <p>Tim support profesional siap membantu Anda 24 jam sehari, 7 hari seminggu.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- Left bottom: Order entry -->
+    <section class="panel">
+      <h2>Order entry</h2>
+      <div class="content">
+        <div class="grid2">
+          <div>
+            <label>Order type</label>
+            <select id="orderType">
+              <option value="market">Market</option>
+              <option value="limit">Limit</option>
+            </select>
+          </div>
+          <div>
+            <label>Side</label>
+            <select id="orderSide">
+              <option value="buy">Buy</option>
+              <option value="sell">Sell</option>
+            </select>
+          </div>
         </div>
+
+        <div class="grid2" style="margin-top:10px;">
+          <div>
+            <label>Harga (IDR) — limit only</label>
+            <input type="number" id="price" placeholder="contoh: 950000000"/>
+          </div>
+          <div>
+            <label>Qty (base)</label>
+            <input type="number" id="qty" placeholder="contoh: 0.01"/>
+          </div>
+        </div>
+
+        <div class="quick">
+          <button data-q="25">25%</button>
+          <button data-q="50">50%</button>
+          <button data-q="75">75%</button>
+          <button data-q="100">100%</button>
+        </div>
+
+        <div class="actions">
+          <button class="btn buy" id="placeBuy">Place BUY</button>
+          <button class="btn sell" id="placeSell">Place SELL</button>
+          <button class="btn secondary" id="reset">Reset</button>
+          <button class="btn ghost" id="cancelBids">Cancel bids</button>
+          <button class="btn ghost" id="cancelAsks">Cancel asks</button>
+          <button class="btn ghost" id="clearTrades">Clear trades</button>
+        </div>
+
+        <div class="metrics" style="margin-top:10px;">
+          <div class="metric"><div class="label">Saldo IDR</div><div class="value" id="balIDR">—</div></div>
+          <div class="metric"><div class="label">Saldo Base</div><div class="value" id="balBase">—</div></div>
+          <div class="metric"><div class="label">Fee</div><div class="value">Taker 0.1% • Maker 0.0%</div></div>
+        </div>
+      </div>
     </section>
 
-    <!-- Programs Section -->
-    <section id="programs" class="py-5 bg-light">
-        <div class="container">
-            <div class="row mb-5">
-                <div class="col-lg-6 mx-auto text-center">
-                    <h2 class="section-title">Program Funded Trading</h2>
-                    <p>Pilih program yang sesuai dengan gaya trading dan experience Anda</p>
-                </div>
-            </div>
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
-                    <div class="program-card card h-100">
-                        <div class="card-header">
-                            <h3>Beginner</h3>
-                            <div class="price">$100</div>75%<div class="price">$25</div>
-                            <p>Modal hingga $5,000</p>
-                        </div>
-                        <div class="card-body">
-                            <ul class="list-unstyled">
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Profit Split 85%</li>
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> 1 Fase Evaluasi</li>
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Daily Drawdown 5%</li>
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Support Priority</li>
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Free Edu Materials</li>
-                            </ul>
-                        </div>
-                        <div class="card-footer bg-white border-0 text-center py-4">
-                            <a href="daftar.html" class="btn btn-primary rounded-pill px-4">Pilih Program</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="program-card card h-100">
-                        <div class="card-header">
-                            <h3>Advanced</h3>
-                            <div class="price">$91,69</div>14%<div class="price">$78,85</div>
-                            <p>Modal hingga $25,000</p>
-                        </div>
-                        <div class="card-body">
-                            <ul class="list-unstyled">
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Profit Split 85%</li>
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> 1 Fase Evaluasi </li>
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Daily Drawdown 6%</li>
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Support 24/7</li>
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Advanced Tools</li>
-                            </ul>
-                        </div>
-                        <div class="card-footer bg-white border-0 text-center py-4">
-                            <a href="daftar.html" class="btn btn-primary rounded-pill px-4">Pilih Program</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mx-md-auto">
-                    <div class="program-card card h-100">
-                        <div class="card-header">
-                            <h3>Professional</h3>
-                            <div class="price">$244,50</div>20%<div class="price">$195,60</div>
-                            <p>Modal hingga $75,000</p>
-                        </div>
-                        <div class="card-body">
-                            <ul class="list-unstyled">
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Profit Split 90%</li>
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Instant Funding</li>
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Daily Drawdown 8%</li>
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Personal Manager</li>
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Exclusive Events</li>
-                            </ul>
-                        </div>
-                        <div class="card-footer bg-white border-0 text-center py-4">
-                            <a href="daftar.html" class="btn btn-primary rounded-pill px-4">Pilih Program</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Right bottom: Recent trades -->
+    <section class="panel">
+      <h2>Recent trades</h2>
+      <div class="content" style="max-height:260px; overflow:auto;">
+        <table>
+          <thead><tr><th style="text-align:left">Waktu</th><th>Harga</th><th>Qty</th><th>Nilai</th><th>Side</th></tr></thead>
+          <tbody id="tradesBody"></tbody>
+        </table>
+      </div>
     </section>
+  </main>
 
-    <!-- How It Works Section -->
-    <section id="how-it-works" class="py-5">
-        <div class="container">
-            <div class="row mb-5">
-                <div class="col-lg-6 mx-auto text-center">
-                    <h2 class="section-title">Cara Kerja</h2>
-                    <p>Proses sederhana untuk menjadi funded trader</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-10 mx-auto">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="card h-100 border-0">
-                                <div class="card-body text-center p-4">
-                                    <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
-                                        <span class="text-white fw-bold display-6">1</span>
-                                    </div>
-                                    <h4>Daftar & Pilih Program</h4>
-                                    <p>Pilih program yang sesuai dengan pengalaman dan gaya trading Anda.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="card h-100 border-0">
-                                <div class="card-body text-center p-4">
-                                    <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
-                                        <span class="text-white fw-bold display-6">2</span>
-                                    </div>
-                                    <h4>Lakukan Evaluasi</h4>
-                                    <p>Tunjukkan kemampuan trading Anda dengan mencapai target profit sesuai aturan.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 mb-4 mx-md-auto">
-                            <div class="card h-100 border-0">
-                                <div class="card-body text-center p-4">
-                                    <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
-                                        <span class="text-white fw-bold display-6">3</span>
-                                    </div>
-                                    <h4>Dapatkan Akun Funded</h4>
-                                    <p>Setelah lulus evaluasi, terima akun funded dan mulai trading dengan modal kami.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col-lg-6 col-md-6 mb-4">
-                            <div class="card h-100 border-0">
-                                <div class="card-body text-center p-4">
-                                    <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
-                                        <span class="text-white fw-bold display-6">4</span>
-                                    </div>
-                                    <h4>Trading & Hasilkan Profit</h4>
-                                    <p>Trading dengan modal kami dan raih profit sesuai dengan strategi Anda.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 mb-4">
-                            <div class="card h-100 border-0">
-                                <div class="card-body text-center p-4">
-                                    <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
-                                        <span class="text-white fw-bold display-6">5</span>
-                                    </div>
-                                    <h4>Dapatkan Profit Share</h4>
-                                    <p>Terima profit share Anda setiap minggu tanpa delay melalui metode pembayaran pilihan.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+  <script>
+    // ===== Utilities =====
+    const fmtIDR = v => new Intl.NumberFormat('id-ID', { style:'currency', currency:'IDR', maximumFractionDigits:0 }).format(v);
+    const fmtNum = (v, dec=8) => Number(v).toFixed(dec);
+    const now = () => new Date().toLocaleTimeString('id-ID', { hour12:false });
 
-    <!-- Testimonials Section -->
-    <section class="py-5 bg-light">
-        <div class="container">
-            <div class="row mb-5">
-                <div class="col-lg-6 mx-auto text-center">
-                    <h2 class="section-title">Apa Kata Trader Kami</h2>
-                    <p>Testimoni dari trader yang telah sukses dengan program funded trading kami</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="testimonial-card">
-                        <div class="testimonial-text mb-4">
-                            <p>"Sejak bergabung dengan TradeFund, saya bisa fokus pada trading tanpa khawatir tentang modal. Profit split 90% benar-benar mengubah finansial saya."</p>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <img src="https://placehold.co/60x60/2c3e50/ecf0f1?text=A" alt="Avatar" class="rounded-circle me-3">
-                            <div>
-                                <h5 class="mb-0">Ahmad Santoso</h5>
-                                <p class="text-muted mb-0">Funded Trader sejak 2022</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="testimonial-card">
-                        <div class="testimonial-text mb-4">
-                            <p>"Platform yang sangat trader-friendly. Eksekusi cepat, spread ketat, dan withdrawal profit tanpa masalah. Recommended banget!"</p>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <img src="https://placehold.co/60x60/2c3e50/ecf0f1?text=S" alt="Avatar" class="rounded-circle me-3">
-                            <div>
-                                <h5 class="mb-0">Sari Dewi</h5>
-                                <p class="text-muted mb-0">Funded Trader sejak 2023</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="testimonial-card">
-                        <div class="testimonial-text mb-4">
-                            <p>"Tim support sangat responsif dan helpful. Materi edukasinya juga top notch. Berkat mereka, skill trading saya meningkat signifikan."</p>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <img src="https://placehold.co/60x60/2c3e50/ecf0f1?text=R" alt="Avatar" class="rounded-circle me-3">
-                            <div>
-                                <h5 class="mb-0">Rudi Hermawan</h5>
-                                <p class="text-muted mb-0">Funded Trader sejak 2022</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    // ===== Pair presets =====
+    const PAIRS = {
+      'BTC/IDR': { tick: 950_000_000, base:'BTC', quote:'IDR', baseInit:0.05, idrInit:100_000_000 },
+      'ETH/IDR': { tick: 45_000_000, base:'ETH', quote:'IDR', baseInit:1.5, idrInit:100_000_000 },
+      'DOGE/IDR': { tick: 2_500, base:'DOGE', quote:'IDR', baseInit:5000, idrInit:100_000_000 }
+    };
 
-    <!-- FAQ Section -->
-    <section id="faq" class="py-5">
-        <div class="container">
-            <div class="row mb-5">
-                <div class="col-lg-6 mx-auto text-center">
-                    <h2 class="section-title">Pertanyaan Umum</h2>
-                    <p>Temukan jawaban atas pertanyaan yang sering diajukan</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-10 mx-auto">
-                    <div class="accordion" id="faqAccordion">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-                                    Apa itu funded trading?
-                                </button>
-                            </h2>
-                            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Funded trading adalah program dimana perusahaan menyediakan modal trading untuk trader yang memiliki skill tetapi memiliki keterbatasan modal. Trader yang lolos evaluasi akan trading dengan modal perusahaan dan mendapatkan profit share dari hasil trading mereka.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-                                    Berapa lama proses evaluasi?
-                                </button>
-                            </h2>
-                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Proses evaluasi tidak dibatasi waktu. Anda dapat menyelesaikan fase evaluasi sesuai dengan kemampuan trading Anda. Beberapa trader menyelesaikan dalam hitungan hari, beberapa lainnya dalam minggu.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
-                                    Apakah ada batasan strategi trading?
-                                </button>
-                            </h2>
-                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Kami mengizinkan berbagai strategi trading selama tidak menggunakan EA/robot yang mengeksploitasi latency atau teknik arbitrase. News trading diperbolehkan, dan tidak ada batasan waktu trading.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
-                                    Kapan saya bisa melakukan withdrawal?
-                                </button>
-                            </h2>
-                            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Untuk akun funded, Anda dapat melakukan withdrawal profit share setiap minggu sekali tanpa batasan minimal. Proses withdrawal diproses dalam 1-3 hari kerja.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
-                                    Apa yang terjadi jika saya melanggar aturan?
-                                </button>
-                            </h2>
-                            <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Jika terjadi pelanggaran aturan, akun evaluasi akan direset dan Anda dapat memulai kembali tanpa biaya tambahan. Untuk akun funded, kami memberikan peringatan terlebih dahulu sebelum mengambil tindakan lebih lanjut.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    const state = {
+      activePair: 'BTC/IDR',
+      perPair: {},
+      fees: { taker: 0.001, maker: 0.0 },
+      vol24: 0
+    };
 
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 mx-auto text-center">
-                    <h2 class="mb-4">Siap Menjadi Funded Trader?</h2>
-                    <p class="lead mb-4">Bergabunglah dengan komunitas trader sukses kami dan raih financial freedom melalui trading</p>
-                    <a href="daftar.html" class="btn btn-light btn-lg rounded-pill px-5 py-3">Daftar Sekarang</a>
-                </div>
-            </div>
-        </div>
-    </section>
+    function initPair(key){
+      const p = PAIRS[key];
+      state.perPair[key] = {
+        balance: { IDR: p.idrInit, BASE: p.baseInit },
+        bids: [], asks: [], trades: [],
+        lastPrice: p.tick, open24: p.tick*0.98,
+        high24: p.tick*1.03, low24: p.tick*0.97, vol24: 0
+      };
+      seedBook(key);
+    }
+    Object.keys(PAIRS).forEach(initPair);
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 mb-4 mb-lg-0">
-                    <h3 class="text-white mb-4"><i class="fas fa-chart-line me-2"></i>TradeFund</h3>
-                    <p>Platform funded trading terpercaya yang membantu trader berbakat untuk trading dengan modal besar tanpa risiko personal.</p>
-                    <div class="d-flex gap-3 mt-4">
-                        <a href="#" class="text-white"><i class="fab fa-facebook-f fa-lg"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-twitter fa-lg"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-instagram fa-lg"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-linkedin-in fa-lg"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-youtube fa-lg"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 mb-4 mb-md-0 footer-links">
-                    <h5>Perusahaan</h5>
-                    <ul>
-                        <li><a href="#">Tentang Kami</a></li>
-                        <li><a href="#">Karir</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Partner</a></li>
-                        <li><a href="#">Press</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-2 col-md-4 mb-4 mb-md-0 footer-links">
-                    <h5>Program</h5>
-                    <ul>
-                        <li><a href="#">Beginner</a></li>
-                        <li><a href="#">Advanced</a></li>
-                        <li><a href="#">Professional</a></li>
-                        <li><a href="#">Enterprise</a></li>
-                        <li><a href="#">Comparison</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-2 col-md-4 mb-4 mb-md-0 footer-links">
-                    <h5>Dukungan</h5>
-                    <ul>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Kebijakan Privasi</a></li>
-                        <li><a href="#">Syarat & Ketentuan</a></li>
-                        <li><a href="#">Bantuan</a></li>
-                        <li><a href="#">Kontak</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-2 col-md-4 footer-links">
-                    <h5>Tools</h5>
-                    <ul>
-                        <li><a href="#">Economic Calendar</a></li>
-                        <li><a href="#">Market Analysis</a></li>
-                        <li><a href="#">Trading Calculators</a></li>
-                        <li><a href="#">MT5 Download</a></li>
-                        <li><a href="#">Learning Resources</a></li>
-                    </ul>
-                </div>
-            </div>
-            <hr class="mt-4 mb-4" style="border-color: rgba(255,255,255,0.1)">
-            <div class="row">
-                <div class="col-md-6 text-center text-md-start">
-                    <p class="mb-0">&copy; 2025 TradeFund. All rights reserved.</p>
-                </div>
-                <div class="col-md-6 text-center text-md-end">
-                    <p class="mb-0">Terdaftar dan diawasi oleh: <a href="https://bappebti.go.id/" class="text-white">BAPPEBTI</a></p>
-                </div>
-            </div>
-        </div>
-    </footer>
+    // ===== Elements =====
+    const el = {
+      currentPair: document.getElementById('currentPair'),
+      tabs: document.querySelectorAll('.tab'),
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+      // summary
+      mLast: document.getElementById('mLast'),
+      mBid: document.getElementById('mBid'),
+      mAsk: document.getElementById('mAsk'),
+      mSpread: document.getElementById('mSpread'),
+      mChange: document.getElementById('mChange'),
+      mHigh: document.getElementById('mHigh'),
+      mLow: document.getElementById('mLow'),
+      mVol: document.getElementById('mVol'),
+
+      // order entry
+      orderType: document.getElementById('orderType'),
+      orderSide: document.getElementById('orderSide'),
+      price: document.getElementById('price'),
+      qty: document.getElementById('qty'),
+      placeBuy: document.getElementById('placeBuy'),
+      placeSell: document.getElementById('placeSell'),
+      reset: document.getElementById('reset'),
+      cancelBids: document.getElementById('cancelBids'),
+      cancelAsks: document.getElementById('cancelAsks'),
+      clearTrades: document.getElementById('clearTrades'),
+      balIDR: document.getElementById('balIDR'),
+      balBase: document.getElementById('balBase'),
+      tradesBody: document.getElementById('tradesBody'),
+
+      // charts
+      candleChart: document.getElementById('candleChart'),
+      depthChart: document.getElementById('depthChart')
+    };
+
+    // ===== Candle chart =====
+    const candle = new Chart(el.candleChart, {
+      type: 'candlestick',
+      data: { datasets: [{ label:'Price', data: [], color:{ up:'#00c389', down:'#ff5c7a', unchanged:'#999' } }] },
+      options: {
+        responsive:true, animation:false,
+        plugins:{ legend:{ display:false }, tooltip:{ mode:'index', intersect:false } },
+        scales:{
+          x:{ ticks:{ color:'#93a1b3', maxRotation:0 }, grid:{ display:false } },
+          y:{ ticks:{ color:'#93a1b3' }, grid:{ color:'#1b2333' } }
+        }
+      }
+    });
+
+    function pushCandle(price){
+      const ds = candle.data.datasets[0];
+      const nowTs = Date.now();
+      const last = ds.data[ds.data.length-1];
+      if(!last || nowTs - last.t > 1000){
+        ds.data.push({ t: nowTs, o: price, h: price, l: price, c: price });
+        if(ds.data.length > 240) ds.data.shift();
+      } else {
+        last.h = Math.max(last.h, price);
+        last.l = Math.min(last.l, price);
+        last.c = price;
+      }
+      candle.update();
+    }
+
+    // ===== Depth chart (area lines for bids/asks) =====
+    const depth = new Chart(el.depthChart, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [
+          { label:'Bids', data: [], borderColor:'#00c389', backgroundColor:'rgba(0,195,137,0.18)', fill:true, tension:0.2, pointRadius:0 },
+          { label:'Asks', data: [], borderColor:'#ff5c7a', backgroundColor:'rgba(255,92,122,0.15)', fill:true, tension:0.2, pointRadius:0 }
+        ]
+      },
+      options: {
+        responsive:true, animation:false,
+        plugins:{ legend:{ display:false }, tooltip:{ mode:'index', intersect:false } },
+        scales:{
+          x:{ ticks:{ color:'#93a1b3', maxRotation:0 }, grid:{ display:false } },
+          y:{ ticks:{ color:'#93a1b3' }, grid:{ color:'#1b2333' } }
+        }
+      }
+    });
+
+    function updateDepth(S){
+      const agg = (orders, side) => {
+        const map = new Map();
+        orders.forEach(o => map.set(o.price, (map.get(o.price)||0) + o.qty));
+        const arr = Array.from(map.entries()).map(([price, qty])=>({ price, qty }))
+          .sort((a,b)=> side==='bid' ? b.price - a.price : a.price - b.price)
+          .slice(0, 15);
+        let cum = 0;
+        return arr.map(x => { cum += x.qty; return { price:x.price, cum }; });
+      };
+      const bids = agg(S.bids, 'bid');
+      const asks = agg(S.asks, 'ask');
+
+      const labels = [...bids.map(b=>b.price).reverse(), ...asks.map(a=>a.price)];
+      const bidSeries = [...bids.map(b=>b.cum).reverse(), ...new Array(asks.length).fill(null)];
+      const askSeries = [...new Array(bids.length).fill(null), ...asks.map(a=>a.cum)];
+
+      depth.data.labels = labels;
+      depth.data.datasets[0].data = bidSeries;
+      depth.data.datasets[1].data = askSeries;
+      depth.update();
+    }
+
+    // ===== Engine =====
+    function getS(){ return state.perPair[state.activePair]; }
+
+    function render(){
+      const S = getS();
+      // sort books
+      S.bids.sort((a,b)=> b.price - a.price || a.ts - b.ts);
+      S.asks.sort((a,b)=> a.price - b.price || a.ts - b.ts);
+
+      const bestBid = S.bids[0]?.price ?? null;
+      const bestAsk = S.asks[0]?.price ?? null;
+
+      // summary
+      el.mLast.textContent = fmtIDR(S.lastPrice);
+      el.mBid.textContent = bestBid ? fmtIDR(bestBid) : '—';
+      el.mAsk.textContent = bestAsk ? fmtIDR(bestAsk) : '—';
+      el.mSpread.textContent = (bestBid&&bestAsk) ? fmtIDR(bestAsk - bestBid) : '—';
+      const chg = (S.lastPrice - S.open24) / S.open24 * 100;
+      el.mChange.textContent = (chg>=0?'+':'') + chg.toFixed(2) + '%';
+      el.mHigh.textContent = fmtIDR(S.high24);
+      el.mLow.textContent = fmtIDR(S.low24);
+      el.mVol.textContent = fmtNum(S.vol24, 4);
+
+      // balances
+      const pair = PAIRS[state.activePair];
+      el.balIDR.textContent = fmtIDR(S.balance.IDR);
+      el.balBase.textContent = fmtNum(S.balance.BASE) + ' ' + pair.base;
+
+      // trades table
+      el.tradesBody.innerHTML = S.trades.slice().reverse().map(t =>
+        `<tr>
+          <td style="text-align:left">${t.time}</td>
+          <td>${fmtIDR(t.price)}</td>
+          <td>${fmtNum(t.qty,6)}</td>
+          <td>${fmtIDR(t.price * t.qty)}</td>
+          <td class="${t.side==='buy'?'buyText':'sellText'}">${t.side.toUpperCase()}</td>
+        </tr>`
+      ).join('');
+
+      // charts
+      updateDepth(S);
+    }
+
+    function recordTrade(t){
+      const S = getS();
+      S.lastPrice = t.price;
+      S.vol24 += t.qty;
+      S.high24 = Math.max(S.high24, t.price);
+      S.low24 = Math.min(S.low24, t.price);
+      S.trades.push({ time: now(), ...t });
+      pushCandle(S.lastPrice);
+    }
+
+    function addOrder({ side, price, qty }){
+      const S = getS();
+      const type = el.orderType.value;
+      if(qty <= 0) return;
+      if(type==='limit' && price <= 0) return;
+
+      const order = { side, price, qty, ts: performance.now() };
+
+      if(side === 'buy'){
+        while(order.qty > 0 && S.asks.length){
+          const best = S.asks[0];
+          if(type==='limit' && best.price > order.price) break;
+          const take = Math.min(order.qty, best.qty);
+          const fee = (type==='market' ? state.fees.taker : state.fees.maker) * best.price * take;
+          const cost = best.price * take + fee;
+          if(S.balance.IDR < cost) break;
+
+          S.balance.IDR -= cost;
+          S.balance.BASE += take;
+
+          best.qty -= take;
+          order.qty -= take;
+          recordTrade({ side:'buy', price: best.price, qty: take });
+          if(best.qty <= 0) S.asks.shift();
+        }
+        if(order.qty > 0 && type==='limit'){
+          S.bids.push({ price: order.price, qty: order.qty, ts: order.ts });
+        }
+      } else {
+        while(order.qty > 0 && S.bids.length){
+          const best = S.bids[0];
+          if(type==='limit' && best.price < order.price) break;
+          const take = Math.min(order.qty, best.qty);
+          const fee = (type==='market' ? state.fees.taker : state.fees.maker) * best.price * take;
+          if(S.balance.BASE < take) break;
+
+          S.balance.BASE -= take;
+          S.balance.IDR += best.price * take - fee;
+
+          best.qty -= take;
+          order.qty -= take;
+          recordTrade({ side:'sell', price: best.price, qty: take });
+          if(best.qty <= 0) S.bids.shift();
+        }
+        if(order.qty > 0 && type==='limit'){
+          S.asks.push({ price: order.price, qty: order.qty, ts: order.ts });
+        }
+      }
+      render();
+    }
+
+    function executeMarket({ side, qty }){
+      const S = getS();
+      if(qty <= 0) return;
+      if(side==='buy'){
+        while(qty > 0 && S.asks.length){
+          const ask = S.asks[0];
+          const take = Math.min(qty, ask.qty);
+          const fee = state.fees.taker * ask.price * take;
+          const cost = ask.price * take + fee;
+          if(S.balance.IDR < cost) break;
+
+          S.balance.IDR -= cost;
+          S.balance.BASE += take;
+          ask.qty -= take;
+          qty -= take;
+          recordTrade({ side:'buy', price: ask.price, qty: take });
+          if(ask.qty <= 0) S.asks.shift();
+        }
+      } else {
+        while(qty > 0 && S.bids.length){
+          const bid = S.bids[0];
+          const take = Math.min(qty, bid.qty);
+          const fee = state.fees.taker * bid.price * take;
+          if(S.balance.BASE < take) break;
+
+          S.balance.BASE -= take;
+          S.balance.IDR += bid.price * take - fee;
+          bid.qty -= take;
+          qty -= take;
+          recordTrade({ side:'sell', price: bid.price, qty: take });
+          if(bid.qty <= 0) S.bids.shift();
+        }
+      }
+      render();
+    }
+
+    // ===== Simulation =====
+    function seedBook(pairKey){
+      const S = state.perPair[pairKey];
+      const baseTick = PAIRS[pairKey].tick;
+      S.bids = [
+        { price: Math.floor(baseTick*0.99), qty: 0.020, ts: performance.now() },
+        { price: Math.floor(baseTick*0.985), qty: 0.030, ts: performance.now()+1 },
+        { price: Math.floor(baseTick*0.98), qty: 0.040, ts: performance.now()+2 },
+      ];
+      S.asks = [
+        { price: Math.floor(baseTick*1.01), qty: 0.015, ts: performance.now() },
+        { price: Math.floor(baseTick*1.015), qty: 0.025, ts: performance.now()+1 },
+        { price: Math.floor(baseTick*1.02), qty: 0.035, ts: performance.now()+2 },
+      ];
+      S.lastPrice = baseTick;
+
+      // Prime candles with historical random
+      const ds = candle.data.datasets[0];
+      ds.data = [];
+      for(let i=60; i>0; i--){
+        const t = Date.now() - i*1000;
+        const o = baseTick + (Math.random()-0.5)*baseTick*0.005;
+        const h = o + Math.random()*baseTick*0.003;
+        const l = o - Math.random()*baseTick*0.003;
+        const c = o + (Math.random()-0.5)*baseTick*0.002;
+        ds.data.push({ t, o, h, l, c });
+      }
+      candle.update();
+    }
+
+    function heartbeat(){
+      const S = getS();
+      const baseTick = PAIRS[state.activePair].tick;
+
+      // random walk
+      const drift = (Math.random()-0.5) * baseTick * 0.004;
+      S.lastPrice = Math.max(1, Math.floor(S.lastPrice + drift));
+
+      // update 24h stats baseline drift (simulasi)
+      S.high24 = Math.max(S.high24, S.lastPrice);
+      S.low24 = Math.min(S.low24, S.lastPrice);
+
+      // nudge best bid/ask
+      const spread = Math.max(1, Math.floor(baseTick * 0.008 + Math.random()*baseTick*0.004));
+      const mid = S.lastPrice;
+      const bid = Math.max(1, Math.floor(mid - spread/2));
+      const ask = Math.max(1, Math.floor(mid + spread/2));
+      if(S.bids.length){ S.bids[0].price = bid; }
+      if(S.asks.length){ S.asks[0].price = ask; }
+
+      pushCandle(S.lastPrice);
+      render();
+    }
+
+    // ===== Events =====
+    el.placeBuy.addEventListener('click', () => {
+      const type = el.orderType.value;
+      const qty = parseFloat(el.qty.value || '0');
+      if(type==='market') executeMarket({ side:'buy', qty });
+      else {
+        const price = parseFloat(el.price.value || '0');
+        addOrder({ side:'buy', price, qty });
+      }
+    });
+    el.placeSell.addEventListener('click', () => {
+      const type = el.orderType.value;
+      const qty = parseFloat(el.qty.value || '0');
+      if(type==='market') executeMarket({ side:'sell', qty });
+      else {
+        const price = parseFloat(el.price.value || '0');
+        addOrder({ side:'sell', price, qty });
+      }
+    });
+
+    el.reset.addEventListener('click', () => {
+      const key = state.activePair;
+      state.perPair[key].balance = { IDR: PAIRS[key].idrInit, BASE: PAIRS[key].baseInit };
+      state.perPair[key].trades = [];
+      state.perPair[key].vol24 = 0;
+      seedBook(key);
+      render();
+    });
+    el.cancelBids.addEventListener('click', () => { getS().bids = []; render(); });
+    el.cancelAsks.addEventListener('click', () => { getS().asks = []; render(); });
+    el.clearTrades.addEventListener('click', () => { getS().trades = []; render(); });
+
+    document.querySelectorAll('.quick button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const pct = parseFloat(btn.dataset.q);
+        const S = getS();
+        const side = el.orderSide.value;
+        if(side === 'buy'){
+          // estimate qty = (IDR * pct) / bestAsk
+          const bestAsk = S.asks[0]?.price ?? S.lastPrice;
+          const budget = S.balance.IDR * (pct/100);
+          const est = Math.max(0, budget / bestAsk);
+          el.qty.value = (est || 0).toFixed(6);
+        } else {
+          // qty = BASE * pct
+          el.qty.value = (S.balance.BASE * (pct/100)).toFixed(6);
+        }
+      });
+    });
+
+    // Tabs
+    el.tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        el.tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        state.activePair = tab.dataset.pair;
+        el.currentPair.textContent = state.activePair;
+        seedBook(state.activePair);
+        render();
+      });
+    });
+
+    // Init
+    seedBook(state.activePair);
+    render();
+    setInterval(heartbeat, 1000);
+  </script>
 </body>
 </html>
