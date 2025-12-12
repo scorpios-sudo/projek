@@ -3,16 +3,15 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Trader X • Exchange (Binance-style)</title>
-  <!-- Chart.js + Financial for candles + (we'll draw depth ourselves) -->
+  <title>Trader X • Exchange (TradingView integrated)</title>
+  <script src="https://s3.tradingview.com/tv.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial@3.8.0/dist/chartjs-chart-financial.min.js"></script>
   <style>
     :root {
       --bg:#0a0f17; --panel:#111725; --border:#1b2333; --muted:#93a1b3; --text:#e7edf5;
       --accent:#00e0a4; --yellow:#f0b90b; --buy:#00c389; --sell:#ff5c7a;
     }
-    * { box-sizing:border-box }
+    * { box-sizing: border-box }
     body { margin:0; background:var(--bg); color:var(--text); font-family:Inter,system-ui,Arial; }
     header { padding:12px 16px; display:flex; align-items:center; gap:12px; border-bottom:1px solid var(--border); }
     header .brand { font-weight:900; color:var(--yellow); }
@@ -52,14 +51,14 @@
     td { text-align:right; }
     .buyText { color:#8fffd3; }
     .sellText { color:#ffa1b3; }
-    .mid { text-align:center; padding:8px; font-weight:800; color:var(--accent); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
 
     .depthWrap { height:220px; }
-    canvas { max-height: 380px; }
+    canvas { max-height: 340px; }
 
     @media (max-width:1000px){
       main.layout { grid-template-columns:1fr; grid-template-rows:auto auto auto auto; }
     }
+    #tvChart { height: 420px; }
   </style>
 </head>
 <body>
@@ -74,9 +73,9 @@
   </header>
 
   <main class="layout">
-    <!-- Left: Chart + summary -->
+    <!-- Left: TradingView Chart + summary -->
     <section class="panel">
-      <h2>Candlestick chart</h2>
+      <h2>TradingView chart</h2>
       <div class="content">
         <div class="metrics">
           <div class="metric"><div class="label">Last</div><div class="value" id="mLast">—</div></div>
@@ -88,7 +87,7 @@
           <div class="metric"><div class="label">24h low</div><div class="value" id="mLow">—</div></div>
           <div class="metric"><div class="label">24h vol</div><div class="value" id="mVol">—</div></div>
         </div>
-        <canvas id="candleChart"></canvas>
+        <div id="tvChart"></div>
       </div>
     </section>
 
@@ -169,6 +168,31 @@
   </main>
 
   <script>
+    // ===== Symbols for TradingView per pair =====
+    const TV_SYMBOLS = {
+      'BTC/IDR': 'INDODAX:BTCIDR',  // fallback later to BINANCE:BTCUSDT if needed
+      'ETH/IDR': 'BINANCE:ETHUSDT',
+      'DOGE/IDR': 'BINANCE:DOGEUSDT'
+    };
+
+    let tvWidget = null;
+    function mountTV(symbol){
+      if(tvWidget){ tvWidget.remove(); tvWidget = null; }
+      tvWidget = new TradingView.widget({
+        symbol,
+        interval: '15',
+        container_id: 'tvChart',
+        autosize: true,
+        locale: 'id',
+        hide_top_toolbar: false,
+        hide_legend: false,
+        save_image: false,
+        studies: ['Volume@tv-basicstudies'],
+        disabled_features: ['use_localstorage_for_settings'],
+        theme: 'dark'
+      });
+    }
+
     // ===== Utilities =====
     const fmtIDR = v => new Intl.NumberFormat('id-ID', { style:'currency', currency:'IDR', maximumFractionDigits:0 }).format(v);
     const fmtNum = (v, dec=8) => Number(v).toFixed(dec);
@@ -185,7 +209,6 @@
       activePair: 'BTC/IDR',
       perPair: {},
       fees: { taker: 0.001, maker: 0.0 },
-      vol24: 0
     };
 
     function initPair(key){
@@ -230,41 +253,11 @@
       balBase: document.getElementById('balBase'),
       tradesBody: document.getElementById('tradesBody'),
 
-      // charts
-      candleChart: document.getElementById('candleChart'),
+      // depth chart
       depthChart: document.getElementById('depthChart')
     };
 
-    // ===== Candle chart =====
-    const candle = new Chart(el.candleChart, {
-      type: 'candlestick',
-      data: { datasets: [{ label:'Price', data: [], color:{ up:'#00c389', down:'#ff5c7a', unchanged:'#999' } }] },
-      options: {
-        responsive:true, animation:false,
-        plugins:{ legend:{ display:false }, tooltip:{ mode:'index', intersect:false } },
-        scales:{
-          x:{ ticks:{ color:'#93a1b3', maxRotation:0 }, grid:{ display:false } },
-          y:{ ticks:{ color:'#93a1b3' }, grid:{ color:'#1b2333' } }
-        }
-      }
-    });
-
-    function pushCandle(price){
-      const ds = candle.data.datasets[0];
-      const nowTs = Date.now();
-      const last = ds.data[ds.data.length-1];
-      if(!last || nowTs - last.t > 1000){
-        ds.data.push({ t: nowTs, o: price, h: price, l: price, c: price });
-        if(ds.data.length > 240) ds.data.shift();
-      } else {
-        last.h = Math.max(last.h, price);
-        last.l = Math.min(last.l, price);
-        last.c = price;
-      }
-      candle.update();
-    }
-
-    // ===== Depth chart (area lines for bids/asks) =====
+    // ===== Depth chart (Chart.js area for bids/asks) =====
     const depth = new Chart(el.depthChart, {
       type: 'line',
       data: {
@@ -357,7 +350,6 @@
       S.high24 = Math.max(S.high24, t.price);
       S.low24 = Math.min(S.low24, t.price);
       S.trades.push({ time: now(), ...t });
-      pushCandle(S.lastPrice);
     }
 
     function addOrder({ side, price, qty }){
@@ -462,19 +454,6 @@
         { price: Math.floor(baseTick*1.02), qty: 0.035, ts: performance.now()+2 },
       ];
       S.lastPrice = baseTick;
-
-      // Prime candles with historical random
-      const ds = candle.data.datasets[0];
-      ds.data = [];
-      for(let i=60; i>0; i--){
-        const t = Date.now() - i*1000;
-        const o = baseTick + (Math.random()-0.5)*baseTick*0.005;
-        const h = o + Math.random()*baseTick*0.003;
-        const l = o - Math.random()*baseTick*0.003;
-        const c = o + (Math.random()-0.5)*baseTick*0.002;
-        ds.data.push({ t, o, h, l, c });
-      }
-      candle.update();
     }
 
     function heartbeat(){
@@ -497,9 +476,25 @@
       if(S.bids.length){ S.bids[0].price = bid; }
       if(S.asks.length){ S.asks[0].price = ask; }
 
-      pushCandle(S.lastPrice);
       render();
     }
+
+    // ===== Quick qty buttons =====
+    document.querySelectorAll('.quick button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const pct = parseFloat(btn.dataset.q);
+        const S = getS();
+        const side = el.orderSide.value;
+        if(side === 'buy'){
+          const bestAsk = S.asks[0]?.price ?? S.lastPrice;
+          const budget = S.balance.IDR * (pct/100);
+          const est = Math.max(0, budget / bestAsk);
+          el.qty.value = (est || 0).toFixed(6);
+        } else {
+          el.qty.value = (S.balance.BASE * (pct/100)).toFixed(6);
+        }
+      });
+    });
 
     // ===== Events =====
     el.placeBuy.addEventListener('click', () => {
@@ -533,39 +528,27 @@
     el.cancelAsks.addEventListener('click', () => { getS().asks = []; render(); });
     el.clearTrades.addEventListener('click', () => { getS().trades = []; render(); });
 
-    document.querySelectorAll('.quick button').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const pct = parseFloat(btn.dataset.q);
-        const S = getS();
-        const side = el.orderSide.value;
-        if(side === 'buy'){
-          // estimate qty = (IDR * pct) / bestAsk
-          const bestAsk = S.asks[0]?.price ?? S.lastPrice;
-          const budget = S.balance.IDR * (pct/100);
-          const est = Math.max(0, budget / bestAsk);
-          el.qty.value = (est || 0).toFixed(6);
-        } else {
-          // qty = BASE * pct
-          el.qty.value = (S.balance.BASE * (pct/100)).toFixed(6);
-        }
-      });
-    });
-
-    // Tabs
+    // Tabs switch: update pair state + TradingView symbol
+    function onPairChange(pair){
+      state.activePair = pair;
+      el.currentPair.textContent = pair;
+      seedBook(pair);
+      render();
+      const sym = TV_SYMBOLS[pair] || 'BINANCE:BTCUSDT';
+      mountTV(sym);
+    }
     el.tabs.forEach(tab => {
       tab.addEventListener('click', () => {
         el.tabs.forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
-        state.activePair = tab.dataset.pair;
-        el.currentPair.textContent = state.activePair;
-        seedBook(state.activePair);
-        render();
+        onPairChange(tab.dataset.pair);
       });
     });
 
     // Init
     seedBook(state.activePair);
     render();
+    mountTV(TV_SYMBOLS[state.activePair] || 'BINANCE:BTCUSDT');
     setInterval(heartbeat, 1000);
   </script>
 </body>
