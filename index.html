@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Trader X • Exchange (TradingView integrated)</title>
-  <script src="https://s3.tradingview.com/tv.js"></script>
+  <title>Trader X • Exchange (TradingView Integrated)</title>
+  <!-- TradingView Advanced Chart -->
+  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+  <!-- Chart.js for depth chart -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
     :root {
@@ -19,46 +21,38 @@
     .tabs { margin-left:auto; display:flex; gap:8px; }
     .tab { padding:6px 10px; border:1px solid var(--border); background:#0d1422; color:var(--muted); border-radius:8px; cursor:pointer; }
     .tab.active { background:var(--yellow); color:#0b0f17; font-weight:800; border-color:#d19c0a; }
-
     main.layout { display:grid; grid-template-columns: 2fr 1fr; grid-template-rows: auto auto; gap:12px; padding:12px; }
     .panel { background:var(--panel); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
     .panel h2 { margin:0; padding:10px 12px; font-size:13px; border-bottom:1px solid var(--border); color:var(--muted); }
     .content { padding:12px; }
-
     .metrics { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:8px; }
     .metric { background:#0e1422; border:1px solid #283042; border-radius:10px; padding:8px 10px; }
     .metric .label { font-size:11px; color:var(--muted); }
     .metric .value { font-size:16px; font-weight:800; margin-top:2px; }
-
     .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
     label { display:block; font-size:12px; color:var(--muted); margin-bottom:6px; }
     input, select { width:100%; padding:10px; border-radius:10px; border:1px solid #283042; background:#0f1421; color:var(--text); }
-
     .actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
     .btn { padding:10px 12px; border:none; border-radius:10px; font-weight:700; cursor:pointer; }
     .btn.buy { background:var(--buy); color:#06140f; }
     .btn.sell { background:var(--sell); color:#2b0a11; }
     .btn.secondary { background:#1c2333; color:var(--text); border:1px solid #283042; }
     .btn.ghost { background:transparent; color:var(--muted); border:1px dashed #2b3448; }
-
     .quick { display:flex; gap:6px; margin-top:8px; }
     .quick button { flex:1; padding:8px; background:#0f1422; color:#b9c3cf; border:1px solid #2a3246; border-radius:8px; cursor:pointer; }
     .quick button:hover { background:var(--accent); color:#0b0f17; }
-
     table { width:100%; border-collapse:collapse; }
     th, td { font-size:12px; padding:6px 4px; border-bottom:1px solid var(--border); }
     th { color:var(--muted); text-align:right; }
     td { text-align:right; }
     .buyText { color:#8fffd3; }
     .sellText { color:#ffa1b3; }
-
     .depthWrap { height:220px; }
     canvas { max-height: 340px; }
-
+    #tvChart { height: 420px; }
     @media (max-width:1000px){
       main.layout { grid-template-columns:1fr; grid-template-rows:auto auto auto auto; }
     }
-    #tvChart { height: 420px; }
   </style>
 </head>
 <body>
@@ -168,9 +162,9 @@
   </main>
 
   <script>
-    // ===== Symbols for TradingView per pair =====
+    // ===== TradingView symbols per pair (use USDT as reliable fallback) =====
     const TV_SYMBOLS = {
-      'BTC/IDR': 'INDODAX:BTCIDR',  // fallback later to BINANCE:BTCUSDT if needed
+      'BTC/IDR': 'BINANCE:BTCUSDT',  // ganti ke INDODAX:BTCIDR jika tersedia
       'ETH/IDR': 'BINANCE:ETHUSDT',
       'DOGE/IDR': 'BINANCE:DOGEUSDT'
     };
@@ -305,14 +299,12 @@
 
     function render(){
       const S = getS();
-      // sort books
       S.bids.sort((a,b)=> b.price - a.price || a.ts - b.ts);
       S.asks.sort((a,b)=> a.price - b.price || a.ts - b.ts);
 
       const bestBid = S.bids[0]?.price ?? null;
       const bestAsk = S.asks[0]?.price ?? null;
 
-      // summary
       el.mLast.textContent = fmtIDR(S.lastPrice);
       el.mBid.textContent = bestBid ? fmtIDR(bestBid) : '—';
       el.mAsk.textContent = bestAsk ? fmtIDR(bestAsk) : '—';
@@ -323,12 +315,10 @@
       el.mLow.textContent = fmtIDR(S.low24);
       el.mVol.textContent = fmtNum(S.vol24, 4);
 
-      // balances
       const pair = PAIRS[state.activePair];
       el.balIDR.textContent = fmtIDR(S.balance.IDR);
       el.balBase.textContent = fmtNum(S.balance.BASE) + ' ' + pair.base;
 
-      // trades table
       el.tradesBody.innerHTML = S.trades.slice().reverse().map(t =>
         `<tr>
           <td style="text-align:left">${t.time}</td>
@@ -339,7 +329,6 @@
         </tr>`
       ).join('');
 
-      // charts
       updateDepth(S);
     }
 
@@ -439,7 +428,6 @@
       render();
     }
 
-    // ===== Simulation =====
     function seedBook(pairKey){
       const S = state.perPair[pairKey];
       const baseTick = PAIRS[pairKey].tick;
@@ -459,16 +447,12 @@
     function heartbeat(){
       const S = getS();
       const baseTick = PAIRS[state.activePair].tick;
-
-      // random walk
       const drift = (Math.random()-0.5) * baseTick * 0.004;
       S.lastPrice = Math.max(1, Math.floor(S.lastPrice + drift));
 
-      // update 24h stats baseline drift (simulasi)
       S.high24 = Math.max(S.high24, S.lastPrice);
       S.low24 = Math.min(S.low24, S.lastPrice);
 
-      // nudge best bid/ask
       const spread = Math.max(1, Math.floor(baseTick * 0.008 + Math.random()*baseTick*0.004));
       const mid = S.lastPrice;
       const bid = Math.max(1, Math.floor(mid - spread/2));
@@ -496,39 +480,7 @@
       });
     });
 
-    // ===== Events =====
-    el.placeBuy.addEventListener('click', () => {
-      const type = el.orderType.value;
-      const qty = parseFloat(el.qty.value || '0');
-      if(type==='market') executeMarket({ side:'buy', qty });
-      else {
-        const price = parseFloat(el.price.value || '0');
-        addOrder({ side:'buy', price, qty });
-      }
-    });
-    el.placeSell.addEventListener('click', () => {
-      const type = el.orderType.value;
-      const qty = parseFloat(el.qty.value || '0');
-      if(type==='market') executeMarket({ side:'sell', qty });
-      else {
-        const price = parseFloat(el.price.value || '0');
-        addOrder({ side:'sell', price, qty });
-      }
-    });
-
-    el.reset.addEventListener('click', () => {
-      const key = state.activePair;
-      state.perPair[key].balance = { IDR: PAIRS[key].idrInit, BASE: PAIRS[key].baseInit };
-      state.perPair[key].trades = [];
-      state.perPair[key].vol24 = 0;
-      seedBook(key);
-      render();
-    });
-    el.cancelBids.addEventListener('click', () => { getS().bids = []; render(); });
-    el.cancelAsks.addEventListener('click', () => { getS().asks = []; render(); });
-    el.clearTrades.addEventListener('click', () => { getS().trades = []; render(); });
-
-    // Tabs switch: update pair state + TradingView symbol
+    // ===== Tabs switch: update pair + TradingView symbol =====
     function onPairChange(pair){
       state.activePair = pair;
       el.currentPair.textContent = pair;
