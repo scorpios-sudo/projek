@@ -3,65 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Jurnal Trading - Web App</title>
+    <title>Jurnal Trading - Perhitungan Pip (0.01 lot = $1/pip)</title>
     <style>
         * {
             box-sizing: border-box;
             font-family: system-ui, 'Segoe UI', 'Roboto', sans-serif;
         }
         body {
-            background: #f4f7fc;
+            background: #f0f4f8;
             margin: 0;
             padding: 20px;
-            color: #1e2a3a;
+            color: #1e293b;
         }
         .container {
-            max-width: 1400px;
+            max-width: 1500px;
             margin: 0 auto;
             background: white;
-            border-radius: 28px;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.02);
-            overflow: hidden;
+            border-radius: 32px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
             padding: 24px 28px;
         }
         h1 {
             font-size: 1.8rem;
-            font-weight: 600;
-            margin-top: 0;
-            margin-bottom: 0.25rem;
+            font-weight: 700;
+            margin: 0 0 0.25rem 0;
             display: flex;
             align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
             justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
         }
         h1 small {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: normal;
-            background: #eef2ff;
-            padding: 6px 14px;
+            background: #e6f0fa;
+            padding: 5px 14px;
             border-radius: 40px;
-            color: #1e40af;
+            color: #0f3b5c;
         }
         .sub {
-            color: #4a627a;
-            border-left: 4px solid #2c7da0;
+            color: #475569;
+            border-left: 4px solid #2563eb;
             padding-left: 16px;
-            margin: 16px 0 24px 0;
-            font-size: 0.95rem;
+            margin: 12px 0 24px 0;
+            font-size: 0.9rem;
         }
-        /* form style */
         .form-panel {
-            background: #f8fafc;
-            border-radius: 24px;
+            background: #f9fafb;
+            border-radius: 28px;
             padding: 20px 24px;
             margin-bottom: 32px;
-            border: 1px solid #e2edf2;
+            border: 1px solid #e2e8f0;
         }
         .form-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 16px 20px;
+            gap: 18px 20px;
             align-items: end;
         }
         .form-field {
@@ -71,26 +68,26 @@
         }
         .form-field label {
             font-weight: 600;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: #2c3e50;
+            color: #334155;
         }
         input, select, textarea {
             padding: 10px 12px;
             border: 1px solid #cbd5e1;
-            border-radius: 16px;
+            border-radius: 18px;
             font-size: 0.9rem;
             background: white;
             transition: 0.2s;
         }
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: #2c7da0;
-            box-shadow: 0 0 0 3px rgba(44,125,160,0.2);
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.2);
         }
         button {
-            background: #2c7da0;
+            background: #2563eb;
             color: white;
             border: none;
             padding: 10px 20px;
@@ -105,7 +102,7 @@
             justify-content: center;
         }
         button:hover {
-            background: #1f5e7a;
+            background: #1d4ed8;
             transform: translateY(-1px);
         }
         .btn-secondary {
@@ -118,53 +115,51 @@
         .btn-outline {
             background: transparent;
             border: 1px solid #cbd5e1;
-            color: #2c3e50;
+            color: #334155;
         }
         .btn-outline:hover {
             background: #f1f5f9;
         }
         .btn-danger {
-            background: #b91c1c;
+            background: #dc2626;
         }
         .btn-danger:hover {
-            background: #991b1b;
+            background: #b91c1c;
         }
         .action-bar {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 15px;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
+            margin-bottom: 25px;
         }
         .stats {
             display: flex;
             flex-wrap: wrap;
-            gap: 18px;
-            background: #eef2ff;
-            padding: 14px 20px;
-            border-radius: 40px;
+            gap: 12px;
         }
         .stat-card {
-            background: white;
-            border-radius: 24px;
+            background: #f8fafc;
+            border-radius: 28px;
             padding: 8px 20px;
             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
         }
         .stat-label {
             font-size: 0.7rem;
             text-transform: uppercase;
-            color: #4b5563;
+            color: #475569;
         }
         .stat-value {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 700;
             line-height: 1.2;
         }
         .table-wrapper {
             overflow-x: auto;
             border-radius: 20px;
-            border: 1px solid #e2edf2;
+            border: 1px solid #e2e8f0;
             background: white;
         }
         table {
@@ -174,36 +169,36 @@
         }
         th {
             background: #f1f5f9;
-            padding: 14px 12px;
+            padding: 14px 10px;
             text-align: left;
             font-weight: 600;
             position: sticky;
             top: 0;
         }
         td {
-            padding: 12px 12px;
+            padding: 12px 10px;
             border-bottom: 1px solid #e9eef3;
             vertical-align: middle;
         }
         .win {
-            background-color: #e6f9ed;
-            color: #0e6b2e;
+            background-color: #d1fae5;
+            color: #065f46;
             font-weight: 600;
             border-radius: 40px;
             display: inline-block;
             padding: 4px 12px;
         }
         .loss {
-            background-color: #ffe6e5;
-            color: #b91c1c;
+            background-color: #fee2e2;
+            color: #991b1b;
             font-weight: 600;
             border-radius: 40px;
             display: inline-block;
             padding: 4px 12px;
         }
         .neutral {
-            background-color: #fef9e3;
-            color: #b45309;
+            background-color: #fef9c3;
+            color: #854d0e;
             border-radius: 40px;
             display: inline-block;
             padding: 4px 12px;
@@ -211,7 +206,7 @@
         .btn-icon {
             background: none;
             padding: 6px 12px;
-            color: #2c7da0;
+            color: #2563eb;
             border-radius: 30px;
             font-size: 0.75rem;
         }
@@ -220,18 +215,18 @@
             transform: none;
         }
         .delete-icon {
-            color: #b91c1c;
+            color: #dc2626;
         }
         .empty-row {
             text-align: center;
             padding: 40px;
-            color: #6c7a8e;
+            color: #64748b;
         }
         footer {
             margin-top: 28px;
             text-align: center;
             font-size: 0.75rem;
-            color: #6c7a8e;
+            color: #64748b;
         }
         @media (max-width: 700px) {
             .container {
@@ -244,15 +239,23 @@
                 font-size: 1.2rem;
             }
         }
+        .note {
+            background: #fef9e3;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin-top: 12px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>
-        📓 Jurnal Trading
-        <small>Web App · Local Storage</small>
+        📊 Jurnal Trading Pro
+        <small>Pip-based: 0.01 lot = $1/pip</small>
     </h1>
-    <div class="sub">Catat setiap transaksi, evaluasi performa, dan ekspor ke Excel/PDF</div>
+    <div class="sub">💡 Perhitungan profit: (Harga Keluar - Harga Masuk) × Lot × 1.000.000 × Arah (Buy=+, Sell=-) → USD. 1 pip = 0.0001, jadi 0.01 lot = $1/pip.</div>
 
     <!-- Form Tambah / Edit -->
     <div class="form-panel">
@@ -264,7 +267,7 @@
                 </div>
                 <div class="form-field">
                     <label>🪙 Pasangan</label>
-                    <input type="text" id="pasangan" placeholder="EUR/USD, BTC/USD" required>
+                    <input type="text" id="pasangan" placeholder="EUR/USD, GBP/USD" required>
                 </div>
                 <div class="form-field">
                     <label>⬆️ Arah</label>
@@ -274,20 +277,25 @@
                     </select>
                 </div>
                 <div class="form-field">
-                    <label>💰 Harga Masuk</label>
-                    <input type="number" step="any" id="hargaMasuk" placeholder="1.0850">
+                    <label>💰 Harga Masuk (Entry)</label>
+                    <input type="number" step="any" id="hargaMasuk" placeholder="1.0850" value="">
                 </div>
                 <div class="form-field">
-                    <label>💸 Harga Keluar</label>
-                    <input type="number" step="any" id="hargaKeluar" placeholder="1.0875">
+                    <label>💸 Harga Keluar (Exit)</label>
+                    <input type="number" step="any" id="hargaKeluar" placeholder="1.0875" value="">
                 </div>
                 <div class="form-field">
-                    <label>📦 Lot / Unit</label>
-                    <input type="number" step="any" id="lot" placeholder="0.1">
+                    <label>📦 Lot (0.01 - 100)</label>
+                    <input type="number" step="0.01" min="0.01" max="100" id="lot" placeholder="0.1" value="">
+                    <div style="font-size: 0.7rem; color: #4b5563;">0.01 lot = $1/pip</div>
                 </div>
                 <div class="form-field">
-                    <label>📈 Profit/Loss (USD)</label>
-                    <input type="number" step="any" id="profitLossManual" placeholder="Isi manual atau auto">
+                    <label>📏 Pips</label>
+                    <input type="number" step="any" id="pips" readonly style="background:#eef2ff; font-weight:bold;">
+                </div>
+                <div class="form-field">
+                    <label>💵 Profit / Loss (USD) *otomatis</label>
+                    <input type="number" step="any" id="profitLossManual" readonly style="background:#eef2ff; font-weight:bold;">
                 </div>
                 <div class="form-field">
                     <label>💸 Komisi (USD)</label>
@@ -307,7 +315,7 @@
                 </div>
             </div>
             <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
-                <button type="button" id="cancelEditBtn" class="btn-outline" style="display: none;">Batal</button>
+                <button type="button" id="cancelEditBtn" class="btn-outline" style="display: none;">Batal Edit</button>
                 <button type="submit" id="submitBtn">➕ Tambah Transaksi</button>
             </div>
         </form>
@@ -319,12 +327,12 @@
             <div class="stat-card"><div class="stat-label">Total Trades</div><div class="stat-value" id="totalTrades">0</div></div>
             <div class="stat-card"><div class="stat-label">Win Rate</div><div class="stat-value" id="winRate">0%</div></div>
             <div class="stat-card"><div class="stat-label">Net Profit (USD)</div><div class="stat-value" id="totalNetProfit">0</div></div>
-            <div class="stat-card"><div class="stat-label">Rata-rata R/R</div><div class="stat-value" id="avgRR">-</div></div>
+            <div class="stat-card"><div class="stat-label">Avg R/R</div><div class="stat-value" id="avgRR">-</div></div>
         </div>
         <div style="display: flex; gap: 10px;">
-            <button id="exportExcelBtn" class="btn-secondary">📎 Export ke Excel (CSV)</button>
+            <button id="exportExcelBtn" class="btn-secondary">📎 Export CSV (Excel)</button>
             <button id="printPdfBtn" class="btn-secondary">🖨️ Cetak / PDF</button>
-            <button id="clearAllBtn" class="btn-danger" onclick="confirmClearAll()">🗑️ Hapus Semua</button>
+            <button id="clearAllBtn" class="btn-danger">🗑️ Hapus Semua</button>
         </div>
     </div>
 
@@ -334,60 +342,102 @@
             <thead>
                 <tr>
                     <th>Tanggal</th><th>Pasangan</th><th>Arah</th><th>Entry</th><th>Exit</th><th>Lot</th>
-                    <th>P/L (USD)</th><th>Komisi</th><th>Swap</th><th>Net Profit</th><th>Strategi</th><th>Status</th><th>Catatan</th><th>Aksi</th>
+                    <th>Pips</th><th>P/L (USD)</th><th>Komisi</th><th>Swap</th><th>Net Profit</th><th>Strategi</th><th>Status</th><th>Catatan</th><th>Aksi</th>
                 </tr>
             </thead>
             <tbody id="tradeTableBody">
-                <tr><td colspan="14" class="empty-row">Belum ada data, tambahkan transaksi di atas ✍️</td></tr>
+                <tr><td colspan="15" class="empty-row">📭 Belum ada data, tambahkan transaksi di atas ✍️</td></tr>
             </tbody>
         </table>
     </div>
-    <footer>📌 Data tersimpan otomatis di browser. Net Profit = Profit/Loss - Komisi - Swap. Status otomatis berdasarkan Net Profit.</footer>
+    <footer>⚡ Perhitungan: Pips = (Harga Keluar - Harga Masuk) / 0.0001 (disesuaikan arah). Profit = Pips × Lot × 100 (karena 0.01 lot = $1/pip, maka 1 lot = $100/pip). Net Profit = P/L - Komisi - Swap. Data tersimpan otomatis di browser.</footer>
+    <div class="note">📌 Catatan: Rumus profit = (Harga Keluar - Harga Masuk) × Lot × 1.000.000 × Arah. 1.000.000 = 100 (pip value per lot) / 0.0001. Untuk 0.01 lot, 1 pip = $1.</div>
 </div>
 
 <script>
-    // ======================= DATA MODEL =======================
+    // ---------- DATA ----------
     let trades = [];
-    let editIndex = null; // jika sedang edit, menyimpan index yang diedit
+    let editIndex = null;
 
-    // Load from localStorage
-    function loadTrades() {
-        const stored = localStorage.getItem("tradingJournal");
-        if(stored) {
-            try {
-                trades = JSON.parse(stored);
-            } catch(e) { trades = []; }
-        } else {
-            // contoh data awal
-            trades = [];
-            // uncomment untuk demo:
-            // trades.push({tanggal:"2026-03-30", pasangan:"EUR/USD", arah:"Buy", hargaMasuk:1.085, hargaKeluar:1.0875, lot:0.1, profitLossManual:25, komisi:0, swap:0, netProfit:25, strategi:"Scalping", catatan:"Sesi London"});
+    // Fungsi hitung pips (absolut berdasarkan selisih harga)
+    function calculatePips(entry, exit, arah) {
+        if (entry === null || exit === null || isNaN(entry) || isNaN(exit)) return 0;
+        let diff = exit - entry;
+        if (arah === "Sell") diff = entry - exit; // untuk pips, kita ingin pips positif jika profit
+        const pips = diff / 0.0001;
+        return parseFloat(pips.toFixed(2));
+    }
+
+    // Hitung profit/loss berdasarkan pips dan lot (0.01 lot = $1/pip)
+    function calculateProfitFromPips(pips, lot, arah) {
+        if (pips === null || lot === null || isNaN(pips) || isNaN(lot)) return 0;
+        // Untuk Buy, pips positif = profit; Sell, pips positif = profit (sudah dibalik di calculatePips)
+        // Profit = pips * lot * 100 (karena 1 lot = $100/pip)
+        const profit = pips * lot * 100;
+        return parseFloat(profit.toFixed(2));
+    }
+
+    // Fungsi utama: update pips dan profit dari entry, exit, lot, arah
+    function updatePipsAndProfit() {
+        const entry = parseFloat(document.getElementById("hargaMasuk").value);
+        const exit = parseFloat(document.getElementById("hargaKeluar").value);
+        const lot = parseFloat(document.getElementById("lot").value);
+        const arah = document.getElementById("arah").value;
+        let pips = 0, pl = 0;
+        if (!isNaN(entry) && !isNaN(exit) && !isNaN(lot)) {
+            pips = calculatePips(entry, exit, arah);
+            pl = calculateProfitFromPips(pips, lot, arah);
         }
-        renderStats();
-        renderTable();
+        document.getElementById("pips").value = pips;
+        document.getElementById("profitLossManual").value = pl;
     }
 
-    function saveTrades() {
-        localStorage.setItem("tradingJournal", JSON.stringify(trades));
-        renderStats();
-        renderTable();
+    // Event listener untuk input yang mempengaruhi perhitungan
+    function bindAutoCalculations() {
+        const fields = ['hargaMasuk', 'hargaKeluar', 'lot', 'arah'];
+        fields.forEach(id => {
+            const el = document.getElementById(id);
+            el.addEventListener('input', updatePipsAndProfit);
+            el.addEventListener('change', updatePipsAndProfit);
+        });
+        updatePipsAndProfit();
     }
 
-    // hitung net profit & status
+    // Helper: hitung net profit & status
     function computeNetProfitAndStatus(trade) {
         let pl = parseFloat(trade.profitLossManual) || 0;
         let komisi = parseFloat(trade.komisi) || 0;
         let swap = parseFloat(trade.swap) || 0;
         let net = pl - komisi - swap;
-        trade.netProfit = net;
+        trade.netProfit = parseFloat(net.toFixed(2));
         trade.status = net > 0 ? "Win" : (net < 0 ? "Loss" : "Breakeven");
         return trade;
     }
 
-    // tambah / update trade
+    // Simpan ke localStorage & render ulang
+    function saveTrades() {
+        localStorage.setItem("tradingJournalPip", JSON.stringify(trades));
+        renderStats();
+        renderTable();
+    }
+
+    function loadTrades() {
+        const stored = localStorage.getItem("tradingJournalPip");
+        if(stored) {
+            try {
+                trades = JSON.parse(stored);
+                trades = trades.map(t => computeNetProfitAndStatus(t));
+            } catch(e) { trades = []; }
+        } else {
+            trades = [];
+        }
+        renderStats();
+        renderTable();
+    }
+
+    // Tambah / Update trade
     function addOrUpdateTrade(formData) {
         if(editIndex !== null) {
-            // update existing
             let updated = { ...formData };
             updated = computeNetProfitAndStatus(updated);
             trades[editIndex] = updated;
@@ -406,31 +456,38 @@
     function resetForm() {
         document.getElementById("tradeForm").reset();
         document.getElementById("tanggal").valueAsDate = new Date();
+        document.getElementById("pips").value = "";
         document.getElementById("profitLossManual").value = "";
         document.getElementById("komisi").value = "0";
         document.getElementById("swap").value = "0";
+        document.getElementById("lot").value = "";
+        document.getElementById("hargaMasuk").value = "";
+        document.getElementById("hargaKeluar").value = "";
         editIndex = null;
         document.getElementById("submitBtn").innerHTML = "➕ Tambah Transaksi";
         document.getElementById("cancelEditBtn").style.display = "none";
+        updatePipsAndProfit();
     }
 
     function editTrade(index) {
-        const trade = trades[index];
-        if(!trade) return;
-        document.getElementById("tanggal").value = trade.tanggal || "";
-        document.getElementById("pasangan").value = trade.pasangan || "";
-        document.getElementById("arah").value = trade.arah || "Buy";
-        document.getElementById("hargaMasuk").value = trade.hargaMasuk || "";
-        document.getElementById("hargaKeluar").value = trade.hargaKeluar || "";
-        document.getElementById("lot").value = trade.lot || "";
-        document.getElementById("profitLossManual").value = trade.profitLossManual || "";
-        document.getElementById("komisi").value = trade.komisi || 0;
-        document.getElementById("swap").value = trade.swap || 0;
-        document.getElementById("strategi").value = trade.strategi || "";
-        document.getElementById("catatan").value = trade.catatan || "";
+        const t = trades[index];
+        if(!t) return;
+        document.getElementById("tanggal").value = t.tanggal || "";
+        document.getElementById("pasangan").value = t.pasangan || "";
+        document.getElementById("arah").value = t.arah || "Buy";
+        document.getElementById("hargaMasuk").value = t.hargaMasuk ?? "";
+        document.getElementById("hargaKeluar").value = t.hargaKeluar ?? "";
+        document.getElementById("lot").value = t.lot ?? "";
+        document.getElementById("pips").value = t.pips ?? "";
+        document.getElementById("profitLossManual").value = t.profitLossManual ?? "";
+        document.getElementById("komisi").value = t.komisi ?? 0;
+        document.getElementById("swap").value = t.swap ?? 0;
+        document.getElementById("strategi").value = t.strategi || "";
+        document.getElementById("catatan").value = t.catatan || "";
         editIndex = index;
         document.getElementById("submitBtn").innerHTML = "✏️ Simpan Perubahan";
         document.getElementById("cancelEditBtn").style.display = "inline-flex";
+        updatePipsAndProfit();
         window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
@@ -444,24 +501,25 @@
     }
 
     function confirmClearAll() {
-        if(confirm("⚠️ Yakin ingin menghapus SEMUA data jurnal? Tindakan ini tidak bisa dibatalkan.")) {
+        if(confirm("⚠️ Yakin ingin menghapus SEMUA data jurnal?")) {
             trades = [];
             saveTrades();
             resetForm();
         }
     }
 
-    // render tabel
+    // Render tabel
     function renderTable() {
         const tbody = document.getElementById("tradeTableBody");
         if(trades.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="14" class="empty-row">📭 Belum ada data, tambahkan transaksi di atas ✍️</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="15" class="empty-row">📭 Belum ada data, tambahkan transaksi di atas ✍️</td></tr>';
             return;
         }
         let html = "";
         trades.forEach((trade, idx) => {
             const net = (trade.netProfit !== undefined ? trade.netProfit : 0).toFixed(2);
             const plRaw = (trade.profitLossManual || 0).toFixed(2);
+            const pips = (trade.pips !== undefined ? trade.pips : 0).toFixed(1);
             let statusClass = "";
             let statusText = trade.status || (net>0?"Win":net<0?"Loss":"Breakeven");
             if(statusText === "Win") statusClass = "win";
@@ -471,9 +529,10 @@
                 <td>${trade.tanggal || "-"}</td>
                 <td>${trade.pasangan || "-"}</td>
                 <td>${trade.arah || "-"}</td>
-                <td>${trade.hargaMasuk || "-"}</td>
-                <td>${trade.hargaKeluar || "-"}</td>
-                <td>${trade.lot || "-"}</td>
+                <td>${trade.hargaMasuk ?? "-"}</td>
+                <td>${trade.hargaKeluar ?? "-"}</td>
+                <td>${trade.lot ?? "-"}</td>
+                <td>${pips}</td>
                 <td>${plRaw}</td>
                 <td>${(trade.komisi || 0).toFixed(2)}</td>
                 <td>${(trade.swap || 0).toFixed(2)}</td>
@@ -500,23 +559,22 @@
         document.getElementById("totalTrades").innerText = total;
         document.getElementById("winRate").innerText = winRate.toFixed(1) + "%";
         document.getElementById("totalNetProfit").innerText = totalNet.toFixed(2);
-        // avg risk reward sederhana (hanya ilustrasi, ambil dari profit/loss positif vs negatif)
         let avgProfit = trades.filter(t=>t.netProfit>0).reduce((a,b)=>a+(b.netProfit||0),0) / (wins||1);
         let avgLoss = trades.filter(t=>t.netProfit<0).reduce((a,b)=>a+Math.abs(b.netProfit||0),0) / (loss||1);
         let rr = (avgProfit && avgLoss) ? (avgProfit/avgLoss).toFixed(2) : "-";
         document.getElementById("avgRR").innerText = (rr !== "-" && rr !== "Infinity") ? rr : "-";
     }
 
-    // export CSV (Excel)
+    // Export CSV
     function exportToCSV() {
         if(trades.length === 0) {
             alert("Tidak ada data untuk diexport.");
             return;
         }
-        const headers = ["Tanggal","Pasangan","Arah","Harga Masuk","Harga Keluar","Lot","Profit/Loss (USD)","Komisi","Swap","Net Profit","Strategi","Status","Catatan"];
+        const headers = ["Tanggal","Pasangan","Arah","Harga Masuk","Harga Keluar","Lot","Pips","Profit/Loss (USD)","Komisi","Swap","Net Profit","Strategi","Status","Catatan"];
         const rows = trades.map(t => [
             t.tanggal, t.pasangan, t.arah, t.hargaMasuk, t.hargaKeluar, t.lot,
-            t.profitLossManual, t.komisi, t.swap, t.netProfit, t.strategi, t.status, t.catatan
+            t.pips, t.profitLossManual, t.komisi, t.swap, t.netProfit, t.strategi, t.status, t.catatan
         ]);
         let csvContent = headers.map(h => `"${h}"`).join(",") + "\n";
         rows.forEach(row => {
@@ -532,14 +590,14 @@
         const link = document.createElement("a");
         const url = URL.createObjectURL(blob);
         link.href = url;
-        link.setAttribute("download", "jurnal_trading.csv");
+        link.setAttribute("download", "jurnal_trading_pip.csv");
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
     }
 
-    // ambil data dari form
+    // Ambil data dari form
     function getFormData() {
         return {
             tanggal: document.getElementById("tanggal").value,
@@ -548,6 +606,7 @@
             hargaMasuk: parseFloat(document.getElementById("hargaMasuk").value) || null,
             hargaKeluar: parseFloat(document.getElementById("hargaKeluar").value) || null,
             lot: parseFloat(document.getElementById("lot").value) || null,
+            pips: parseFloat(document.getElementById("pips").value) || 0,
             profitLossManual: parseFloat(document.getElementById("profitLossManual").value) || 0,
             komisi: parseFloat(document.getElementById("komisi").value) || 0,
             swap: parseFloat(document.getElementById("swap").value) || 0,
@@ -556,7 +615,7 @@
         };
     }
 
-    // event form submit
+    // Event submit form
     document.getElementById("tradeForm").addEventListener("submit", (e) => {
         e.preventDefault();
         const formData = getFormData();
@@ -568,21 +627,29 @@
             alert("Pasangan wajib diisi!");
             return;
         }
+        if(formData.hargaMasuk === null || formData.hargaKeluar === null || formData.lot === null) {
+            alert("Harga Masuk, Harga Keluar, dan Lot harus diisi.");
+            return;
+        }
+        if(formData.lot < 0.01 || formData.lot > 100) {
+            alert("Lot harus antara 0.01 dan 100.");
+            return;
+        }
         addOrUpdateTrade(formData);
     });
 
     document.getElementById("cancelEditBtn").addEventListener("click", () => {
         resetForm();
     });
-
     document.getElementById("exportExcelBtn").addEventListener("click", exportToCSV);
     document.getElementById("printPdfBtn").addEventListener("click", () => {
         window.print();
     });
+    document.getElementById("clearAllBtn").addEventListener("click", confirmClearAll);
 
-    // set tanggal default hari ini
+    // Set tanggal default hari ini
     document.getElementById("tanggal").valueAsDate = new Date();
-
+    bindAutoCalculations();
     loadTrades();
 </script>
 </body>
