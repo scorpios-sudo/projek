@@ -1,773 +1,705 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Jurnal Trading - Trader X </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Trader X Academy | Premium Fintech Platform</title>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- Font Awesome 6 (free icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Inter + Space Grotesk -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
-            box-sizing: border-box;
-            font-family: system-ui, 'Segoe UI', 'Roboto', sans-serif;
-        }
-        body {
-            background: #f0f4f8;
             margin: 0;
-            padding: 20px;
-            color: #1e293b;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .container {
-            max-width: 1500px;
+
+        body {
+            background: #0A0C10;
+            font-family: 'Inter', sans-serif;
+            color: #EFF3F8;
+            overflow-x: hidden;
+        }
+
+        /* Main App Container */
+        .app-container {
+            max-width: 500px;
             margin: 0 auto;
-            background: white;
-            border-radius: 32px;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
-            padding: 24px 28px;
+            background: radial-gradient(circle at 20% 0%, #0F1219, #03050A);
+            min-height: 100vh;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            position: relative;
+            padding-top: 70px;
+            padding-bottom: 30px;
         }
-        h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin: 0 0 0.25rem 0;
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #1A1F2A; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #2A6DFF; border-radius: 10px; }
+
+        /* Top Navbar (Glass) */
+        .top-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            max-width: 500px;
+            margin: 0 auto;
+            background: rgba(12, 16, 24, 0.85);
+            backdrop-filter: blur(20px);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
+            padding: 14px 20px;
+            border-bottom: 1px solid rgba(42, 109, 255, 0.4);
+            z-index: 150;
+            border-radius: 0 0 28px 28px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.3);
         }
-        h1 small {
-            font-size: 0.8rem;
-            font-weight: normal;
-            background: #e6f0fa;
-            padding: 5px 14px;
-            border-radius: 40px;
-            color: #0f3b5c;
-        }
-        .sub {
-            color: #475569;
-            border-left: 4px solid #2563eb;
-            padding-left: 16px;
-            margin: 12px 0 24px 0;
-            font-size: 0.9rem;
-        }
-        .form-panel {
-            background: #f9fafb;
-            border-radius: 28px;
-            padding: 20px 24px;
-            margin-bottom: 32px;
-            border: 1px solid #e2e8f0;
-        }
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 18px 20px;
-            align-items: end;
-        }
-        .form-field {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .form-field label {
-            font-weight: 600;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #334155;
-        }
-        input, select, textarea {
-            padding: 10px 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 18px;
-            font-size: 0.9rem;
-            background: white;
-            transition: 0.2s;
-        }
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37,99,235,0.2);
-        }
-        input[readonly] {
-            background-color: #eef2ff;
-            cursor: default;
-        }
-        button {
-            background: #2563eb;
-            color: white;
+        .top-navbar button {
+            background: none;
             border: none;
-            padding: 10px 20px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 24px;
+            color: #EFF3F8;
             cursor: pointer;
             transition: 0.2s;
+        }
+        .top-navbar button:hover { transform: scale(1.05); color: #2A6DFF; }
+        .logo {
+            font-weight: 800;
+            font-size: 18px;
+            background: linear-gradient(135deg, #FFFFFF, #2A6DFF, #00E6B2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+        }
+
+        /* Sidebar (Offcanvas) */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            display: none;
+            transition: 0.25s;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 280px;
+            height: 100%;
+            background: rgba(14, 18, 28, 0.96);
+            backdrop-filter: blur(24px);
+            border-right: 1px solid rgba(42, 109, 255, 0.6);
+            z-index: 201;
+            transition: left 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            padding: 32px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-shadow: 8px 0 40px rgba(0,0,0,0.6);
+        }
+        .sidebar.open { left: 0; }
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 17px;
+            font-weight: 600;
+            padding: 12px 18px;
+            border-radius: 60px;
+            background: transparent;
+            transition: all 0.2s;
+            cursor: pointer;
+            color: #B8C7FF;
+        }
+        .sidebar-item i { width: 28px; font-size: 20px; }
+        .sidebar-item:hover, .sidebar-item.active-sidebar {
+            background: rgba(42, 109, 255, 0.25);
+            color: white;
+            transform: translateX(8px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .upgrade-sidebar {
+            background: linear-gradient(95deg, rgba(255,180,71,0.2), rgba(255,136,0,0.1));
+            border: 1px solid #FFB347;
+            margin-top: auto;
+            color: #FFD966;
+        }
+
+        /* Pages */
+        .page {
+            display: none;
+            padding: 20px 18px 30px;
+            animation: fadeIn 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        .page.active-page { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Glass Cards */
+        .card {
+            background: rgba(20, 26, 36, 0.65);
+            backdrop-filter: blur(8px);
+            border-radius: 28px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(42, 109, 255, 0.25);
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.5);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 24px 40px -12px black; border-color: rgba(42,109,255,0.5); }
+
+        .glass-btn {
+            background: linear-gradient(95deg, #1F2A44, #121A2A);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 40px;
+            font-weight: 700;
+            color: white;
+            font-size: 14px;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
-        button:hover {
-            background: #1d4ed8;
-            transform: translateY(-1px);
+        .glass-btn.primary {
+            background: linear-gradient(135deg, #2A6DFF, #0047CA);
+            box-shadow: 0 6px 14px rgba(42,109,255,0.4);
         }
-        .btn-secondary {
-            background: #e2e8f0;
-            color: #1e293b;
-        }
-        .btn-secondary:hover {
-            background: #cbd5e1;
-        }
-        .btn-outline {
-            background: transparent;
-            border: 1px solid #cbd5e1;
-            color: #334155;
-        }
-        .btn-outline:hover {
-            background: #f1f5f9;
-        }
-        .btn-danger {
-            background: #dc2626;
-        }
-        .btn-danger:hover {
-            background: #b91c1c;
-        }
-        .action-bar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-        .stats {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        .stat-card {
-            background: #f8fafc;
-            border-radius: 28px;
-            padding: 8px 20px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-            border: 1px solid #e2e8f0;
-        }
-        .stat-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            color: #475569;
-        }
-        .stat-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            line-height: 1.2;
-        }
-        .table-wrapper {
-            overflow-x: auto;
-            border-radius: 20px;
-            border: 1px solid #e2e8f0;
-            background: white;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-        }
-        th {
-            background: #f1f5f9;
-            padding: 14px 10px;
-            text-align: left;
-            font-weight: 600;
-            position: sticky;
-            top: 0;
-        }
-        td {
-            padding: 12px 10px;
-            border-bottom: 1px solid #e9eef3;
-            vertical-align: middle;
-        }
-        td.numeric, th.numeric {
-            text-align: right;
-        }
-        .win {
-            background-color: #d1fae5;
-            color: #065f46;
-            font-weight: 600;
-            border-radius: 40px;
-            display: inline-block;
-            padding: 4px 12px;
-        }
-        .loss {
-            background-color: #fee2e2;
-            color: #991b1b;
-            font-weight: 600;
-            border-radius: 40px;
-            display: inline-block;
-            padding: 4px 12px;
-        }
-        .neutral {
-            background-color: #fef9c3;
-            color: #854d0e;
-            border-radius: 40px;
-            display: inline-block;
-            padding: 4px 12px;
-        }
-        .btn-icon {
-            background: none;
-            padding: 6px 12px;
-            color: #2563eb;
-            border-radius: 30px;
-            font-size: 0.75rem;
-        }
-        .btn-icon:hover {
-            background: #eef2ff;
-            transform: none;
-        }
-        .delete-icon {
-            color: #dc2626;
-        }
-        .empty-row {
-            text-align: center;
-            padding: 40px;
-            color: #64748b;
-        }
-        footer {
-            margin-top: 28px;
-            text-align: center;
-            font-size: 0.75rem;
-            color: #64748b;
-        }
-        @media (max-width: 700px) {
-            .container {
-                padding: 16px;
-            }
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            .stat-value {
-                font-size: 1.2rem;
-            }
-        }
-        .note {
-            background: #fef9e3;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            margin-top: 12px;
-            text-align: center;
-        }
-        .pip-info {
-            background: #2563eb;
-            color: white;
+        .glass-btn.primary:hover { transform: scale(0.97); filter: brightness(1.05); }
+        .badge {
+            background: rgba(42, 109, 255, 0.2);
+            border-radius: 60px;
             padding: 6px 14px;
-            border-radius: 40px;
-            font-size: 0.75rem;
+            font-size: 12px;
             font-weight: 600;
+            color: #6D9EFF;
         }
-        .lot-info {
-            background: #e6f0fa;
-            padding: 4px 10px;
-            border-radius: 16px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: #0f3b5c;
-            display: inline-block;
-            margin-top: 4px;
+        .profit-text { color: #00E6B2; font-weight: 800; }
+        .loss-text { color: #FF4D6D; font-weight: 800; }
+        hr { border-color: #2A3448; margin: 14px 0; }
+
+        /* Horizontal Scroll */
+        .scroll-x {
+            display: flex;
+            overflow-x: auto;
+            gap: 16px;
+            scroll-snap-type: x mandatory;
+            padding-bottom: 8px;
         }
-        .pair-detect {
-            background: #dcfce7;
-            color: #166534;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.7rem;
+        .video-card, .news-card-mini {
+            flex: 0 0 280px;
+            background: #11161F;
+            border-radius: 24px;
+            overflow: hidden;
+            scroll-snap-align: start;
+            border: 1px solid #2A3A55;
+        }
+        iframe { width: 100%; height: 160px; border: none; }
+        .signal-card, .module-card, .journal-item {
+            background: #0E121C;
+            border-radius: 24px;
+            padding: 16px;
+            margin-bottom: 16px;
+            transition: 0.1s;
+        }
+        .premium-blur {
+            filter: blur(6px);
+            background: #161C28;
+            pointer-events: none;
+            position: relative;
+        }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+        /* Toast */
+        .toast-msg {
+            position: fixed;
+            bottom: 100px;
+            left: 20px;
+            right: 20px;
+            max-width: 460px;
+            margin: 0 auto;
+            background: #1E293B;
+            backdrop-filter: blur(20px);
+            border-left: 5px solid #2A6DFF;
+            padding: 14px 20px;
+            border-radius: 60px;
             font-weight: 500;
-            margin-left: 8px;
+            z-index: 300;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            animation: slideUp 0.25s ease;
+        }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 500;
+        }
+        .modal-content {
+            background: #11161F;
+            border-radius: 40px;
+            width: 85%;
+            max-width: 380px;
+            padding: 28px;
+            border: 1px solid #2A6DFF;
+        }
+        input, select {
+            background: #0A0F18;
+            border: 1px solid #2A3A55;
+            padding: 14px 16px;
+            border-radius: 34px;
+            color: white;
+            width: 100%;
+            margin-top: 6px;
+            margin-bottom: 16px;
+            font-family: 'Inter', sans-serif;
+        }
+        input:focus { border-color: #2A6DFF; outline: none; }
+
+        /* Login/Register */
+        .auth-container {
+            max-width: 500px;
+            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at 30% 20%, #0B0F17, #020408);
+            padding: 24px;
+        }
+        .auth-card {
+            background: rgba(16, 22, 32, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 48px;
+            padding: 36px 28px;
+            width: 100%;
+            border: 1px solid #2A6DFF;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>
-        📊 Jurnal Trading Trader X Academy
-        <small><span class="pip-info">⚡ 0.01 LOT = $1 / PIP</span></small>
-    </h1>
-    <div class="sub">💡 <strong>Auto-detect pasangan:</strong> Forex (EUR/USD, GBP/USD) pakai 1 pip = 0.0001 | XAUUSD/GOLD pakai 1 pip = 0.01</div>
 
-    <!-- Form Tambah / Edit -->
-    <div class="form-panel">
-        <form id="tradeForm">
-            <div class="form-grid">
-                <div class="form-field">
-                    <label>📅 Tanggal</label>
-                    <input type="date" id="tanggal" required>
-                </div>
-                <div class="form-field">
-                    <label>🪙 Pasangan</label>
-                    <input type="text" id="pasangan" placeholder="EUR/USD, XAUUSD, GBP/USD" required>
-                    <div id="pairDetect" style="font-size: 0.7rem; margin-top: 4px;"></div>
-                </div>
-                <div class="form-field">
-                    <label>⬆️ Arah</label>
-                    <select id="arah">
-                        <option value="Buy">Buy (Long)</option>
-                        <option value="Sell">Sell (Short)</option>
-                    </select>
-                </div>
-                <div class="form-field">
-                    <label>💰 Harga Masuk (Entry)</label>
-                    <input type="number" step="any" id="hargaMasuk" placeholder="1.0850" value="">
-                </div>
-                <div class="form-field">
-                    <label>💸 Harga Keluar (Exit)</label>
-                    <input type="number" step="any" id="hargaKeluar" placeholder="1.0875" value="">
-                </div>
-                <div class="form-field">
-                    <label>📦 Lot (0.01 - 100)</label>
-                    <input type="number" step="0.01" min="0.01" max="100" id="lot" placeholder="0.1" value="">
-                    <div class="lot-info">💰 0.01 lot = $1 per pip | 0.1 lot = $10/pip | 1 lot = $100/pip</div>
-                </div>
-                <div class="form-field">
-                    <label>📏 Pips</label>
-                    <input type="text" id="pips" readonly style="background:#eef2ff; font-weight:bold;">
-                </div>
-                <div class="form-field">
-                    <label>💵 Profit / Loss (USD)</label>
-                    <input type="text" id="profitLossManual" readonly style="background:#eef2ff; font-weight:bold;">
-                </div>
-                <div class="form-field">
-                    <label>💸 Komisi (USD)</label>
-                    <input type="number" step="any" id="komisi" value="0">
-                </div>
-                <div class="form-field">
-                    <label>🔄 Swap (USD)</label>
-                    <input type="number" step="any" id="swap" value="0">
-                </div>
-                <div class="form-field">
-                    <label>📌 Strategi</label>
-                    <input type="text" id="strategi" placeholder="Scalping, S&R...">
-                </div>
-                <div class="form-field">
-                    <label>📝 Catatan</label>
-                    <input type="text" id="catatan" placeholder="Emosi, konteks...">
-                </div>
-            </div>
-            <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
-                <button type="button" id="cancelEditBtn" class="btn-outline" style="display: none;">Batal Edit</button>
-                <button type="submit" id="submitBtn">➕ Tambah Transaksi</button>
-            </div>
-        </form>
-    </div>
-
-    <!-- Action Bar + Statistik -->
-    <div class="action-bar">
-        <div class="stats">
-            <div class="stat-card"><div class="stat-label">Total Trades</div><div class="stat-value" id="totalTrades">0</div></div>
-            <div class="stat-card"><div class="stat-label">Win Rate</div><div class="stat-value" id="winRate">0%</div></div>
-            <div class="stat-card"><div class="stat-label">Net Profit (USD)</div><div class="stat-value" id="totalNetProfit">$0.00</div></div>
-            <div class="stat-card"><div class="stat-label">Avg R/R</div><div class="stat-value" id="avgRR">-</div></div>
+<!-- AUTH (Login/Register) -->
+<div id="authContainer" class="auth-container">
+    <div class="auth-card" id="authCard">
+        <div style="text-align:center; margin-bottom: 32px;">
+            <i class="fas fa-chart-line fa-3x" style="color:#2A6DFF; filter: drop-shadow(0 0 8px #2A6DFF);"></i>
+            <h1 style="margin-top: 16px;">Trader X Academy</h1>
+            <p>Premium trading ecosystem</p>
         </div>
-        <div style="display: flex; gap: 10px;">
-            <button id="exportExcelBtn" class="btn-secondary">📎 Export CSV (Excel)</button>
-            <button id="printPdfBtn" class="btn-secondary">🖨️ Cetak / PDF</button>
-            <button id="clearAllBtn" class="btn-danger">🗑️ Hapus Semua</button>
+        <div id="loginForm">
+            <input type="email" id="loginEmail" placeholder="Email" value="demo@traderx.com">
+            <input type="password" id="loginPassword" placeholder="Password" value="123456">
+            <button class="glass-btn primary" id="doLoginBtn" style="width:100%; justify-content:center;">Login</button>
+            <p style="text-align:center; margin-top:20px;">Don't have an account? <span id="showRegisterBtn" style="color:#2A6DFF; cursor:pointer;">Register</span></p>
+        </div>
+        <div id="registerForm" style="display:none;">
+            <input type="text" id="regName" placeholder="Full Name">
+            <input type="email" id="regEmail" placeholder="Email">
+            <input type="password" id="regPassword" placeholder="Password">
+            <button class="glass-btn primary" id="doRegisterBtn" style="width:100%; justify-content:center;">Create Account</button>
+            <p style="text-align:center; margin-top:20px;">Already have an account? <span id="showLoginBtn" style="color:#2A6DFF; cursor:pointer;">Login</span></p>
         </div>
     </div>
+</div>
 
-    <!-- Tabel Jurnal -->
-    <div class="table-wrapper">
-        <table id="tradeTable">
-            <thead>
-                <tr>
-                    <th>Tanggal</th><th>Pasangan</th><th>Arah</th><th>Entry</th><th>Exit</th><th>Lot</th>
-                    <th class="numeric">Pips</th><th class="numeric">P/L (USD)</th><th class="numeric">Komisi</th><th class="numeric">Swap</th><th class="numeric">Net Profit</th><th>Strategi</th><th>Status</th><th>Catatan</th><th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody id="tradeTableBody">
-                <tr><td colspan="15" class="empty-row">📭 Belum ada data, tambahkan transaksi di atas ✍️</td></tr>
-            </tbody>
-        </table>
+<!-- MAIN APP (after login) -->
+<div id="mainApp" style="display: none;">
+    <div class="app-container">
+        <div class="top-navbar">
+            <button id="menuToggleBtn"><i class="fas fa-bars"></i></button>
+            <div class="logo">TRADER X ACADEMY</div>
+            <button id="notifBellBtn"><i class="fas fa-bell"></i></button>
+        </div>
+
+        <!-- Sidebar -->
+        <div id="sidebarOverlay" class="sidebar-overlay"></div>
+        <div id="sidebar" class="sidebar">
+            <div style="margin-bottom: 10px;"><i class="fas fa-crown" style="color: #FFB347; font-size: 34px;"></i><h3 style="margin-top: 8px;">Menu</h3></div>
+            <div class="sidebar-item" data-page="dashboard"><i class="fas fa-home"></i> Dashboard</div>
+            <div class="sidebar-item" data-page="signal"><i class="fas fa-chart-line"></i> Signal</div>
+            <div class="sidebar-item" data-page="education"><i class="fas fa-graduation-cap"></i> Education</div>
+            <div class="sidebar-item" data-page="journal"><i class="fas fa-book-open"></i> Journal Trading</div>
+            <div class="sidebar-item" data-page="calculator"><i class="fas fa-calculator"></i> Calculator</div>
+            <div class="sidebar-item" data-page="news"><i class="fas fa-newspaper"></i> News</div>
+            <div class="sidebar-item" data-page="profile"><i class="fas fa-user"></i> Profile</div>
+            <div class="sidebar-item upgrade-sidebar" id="sidebarMembership"><i class="fas fa-gem"></i> Membership</div>
+        </div>
+
+        <!-- PAGES -->
+        <div id="dashboardPage" class="page active-page"></div>
+        <div id="signalPage" class="page"></div>
+        <div id="educationPage" class="page"></div>
+        <div id="journalPage" class="page"></div>
+        <div id="calculatorPage" class="page"></div>
+        <div id="newsPage" class="page"></div>
+        <div id="profilePage" class="page"></div>
+        <div id="membershipPage" class="page"></div>
     </div>
-    <footer>⚡ <strong>Perhitungan Pips:</strong><br>
-    - Forex (EUR/USD, GBP/USD, dll): 1 pip = 0.0001 → Pips = |Exit - Entry| / 0.0001<br>
-    - XAUUSD / GOLD: 1 pip = 0.01 → Pips = |Exit - Entry| / 0.01<br>
-    <strong>Profit = Pips × Lot × 100</strong> (karena 0.01 lot = $1/pip)<br>
-    Net Profit = Profit - Komisi - Swap</footer>
-    <div class="note">📌 Contoh XAUUSD: Entry 4.57794, Exit 4.51684, Lot 0.13, Arah Sell → Selisih = 0.0611, Pips = 0.0611 / 0.01 = 611, Profit = 611 × 0.13 × 100 = <strong>$7,943.00</strong> ✅</div>
 </div>
 
 <script>
-    // ---------- DATA ----------
-    let trades = [];
-    let editIndex = null;
+    // ---------- DATA & STATE ----------
+    let currentUser = null;          // { id, name, email, premium, journalEntries }
+    let users = [];                  // stored in localStorage
+    let signals = [];
+    let educationModules = [];
+    let newsArticles = [];
+    let activityFeed = [];
+    let chartInstance = null;
 
-    // Fungsi untuk mengecek apakah pasangan adalah XAUUSD atau GOLD
-    function isGoldPair(pair) {
-        if (!pair) return false;
-        let upperPair = pair.toUpperCase();
-        return upperPair.includes("XAU") || upperPair.includes("GOLD");
+    // Initial dummy data
+    function initData() {
+        signals = [
+            { id: 1, pair: "BTC/USD", entry: 68420, tp: 69500, sl: 67800, confidence: 87, status: "Running", timeLeft: "2h", premium: false },
+            { id: 2, pair: "EUR/USD", entry: 1.0925, tp: 1.0980, sl: 1.0880, confidence: 92, status: "TP Hit", timeLeft: "Closed", premium: false },
+            { id: 3, pair: "XAU/USD", entry: 2365, tp: 2385, sl: 2345, confidence: 78, status: "Running", timeLeft: "5h", premium: true },
+            { id: 4, pair: "ETH/USD", entry: 3250, tp: 3400, sl: 3170, confidence: 84, status: "Running", timeLeft: "3h", premium: true },
+            { id: 5, pair: "SOL/USD", entry: 172.4, tp: 185.0, sl: 166.2, confidence: 91, status: "SL Hit", timeLeft: "Closed", premium: true }
+        ];
+        educationModules = [
+            { id: 1, title: "Smart Money Concepts", desc: "Institutional order flow basics", premium: false, videoId: "dQw4w9WgXcQ" },
+            { id: 2, title: "Risk Management 101", desc: "Position sizing & drawdown", premium: false, videoId: "JfVOs4VSpmA" },
+            { id: 3, title: "Advanced Entry Precision", desc: "Supply/demand + FVG", premium: true, videoId: "3nXLaO--DqM" },
+            { id: 4, title: "Market Profile Mastery", desc: "Volume profile analysis", premium: true, videoId: "LDU_Txk06tM" }
+        ];
+        newsArticles = [
+            { id: 1, title: "Fed signals rate cuts in H2 2025", image: "https://picsum.photos/id/26/100/100", desc: "Dovish stance boosts crypto", date: "2h ago" },
+            { id: 2, title: "Gold breaks resistance, targets $2400", image: "https://picsum.photos/id/29/100/100", desc: "Safe haven demand surges", date: "5h ago" },
+            { id: 3, title: "Bitcoin dominance reaches 54%", image: "https://picsum.photos/id/20/100/100", desc: "Altcoin season awaits", date: "1d ago" }
+        ];
+        for(let i=0;i<5;i++) activityFeed.push(`📊 Market update: ${Math.random() > 0.5 ? 'Volatility increasing' : 'Liquidity sweep'}`);
     }
 
-    // Fungsi untuk mendapatkan nilai pip berdasarkan pasangan
-    function getPipValue(pair) {
-        if (isGoldPair(pair)) {
-            return 0.01; // XAUUSD: 1 pip = 0.01
+    // Load users from localStorage
+    function loadUsers() {
+        const stored = localStorage.getItem("traderx_users");
+        if(stored) users = JSON.parse(stored);
+        else {
+            users = [{ id: 1, name: "Alex Trader", email: "demo@traderx.com", password: "123456", premium: false, journalEntries: [] }];
+            saveUsers();
         }
-        return 0.0001; // Forex: 1 pip = 0.0001
     }
-
-    // Fungsi hitung pips
-    function calculatePips(entry, exit, arah, pair) {
-        if (entry === null || exit === null || isNaN(entry) || isNaN(exit)) return 0;
-        let diff = exit - entry;
-        if (arah === "Sell") diff = entry - exit;
-        const pipValue = getPipValue(pair);
-        const pips = diff / pipValue;
-        return parseFloat(pips.toFixed(2));
-    }
-
-    // Hitung profit berdasarkan pips dan lot (0.01 lot = $1/pip)
-    function calculateProfitFromPips(pips, lot) {
-        if (pips === null || lot === null || isNaN(pips) || isNaN(lot)) return 0;
-        const profit = pips * lot * 100;
-        return parseFloat(profit.toFixed(2));
-    }
-
-    // Hitung net profit
-    function calculateNetProfit(profit, komisi, swap) {
-        return parseFloat((profit - komisi - swap).toFixed(2));
-    }
-
-    // Format angka ke format USD
-    function formatUSD(value) {
-        if (value === null || value === undefined || isNaN(value)) return "$0.00";
-        let num = parseFloat(value);
-        let rounded = Math.round(num * 100) / 100;
-        let parts = rounded.toFixed(2).split('.');
-        let integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        let decimalPart = parts[1];
-        return "$" + integerPart + "." + decimalPart;
-    }
-
-    function formatNumberUSD(value) {
-        if (value === null || value === undefined || isNaN(value)) return "0.00";
-        let num = parseFloat(value);
-        let rounded = Math.round(num * 100) / 100;
-        let parts = rounded.toFixed(2).split('.');
-        let integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        let decimalPart = parts[1];
-        return integerPart + "." + decimalPart;
-    }
-
-    // Update deteksi pasangan
-    function updatePairDetect() {
-        const pair = document.getElementById("pasangan").value;
-        const detectDiv = document.getElementById("pairDetect");
-        if (isGoldPair(pair)) {
-            detectDiv.innerHTML = '<span style="background:#dcfce7; color:#166534; padding:2px 10px; border-radius:16px;">🥇 Detected: XAUUSD/GOLD (1 pip = 0.01)</span>';
-        } else if (pair && pair.trim() !== "") {
-            detectDiv.innerHTML = '<span style="background:#e6f0fa; color:#0f3b5c; padding:2px 10px; border-radius:16px;">💱 Detected: Forex (1 pip = 0.0001)</span>';
-        } else {
-            detectDiv.innerHTML = '';
+    function saveUsers() { localStorage.setItem("traderx_users", JSON.stringify(users)); }
+    function saveCurrentUser() { localStorage.setItem("traderx_currentUser", JSON.stringify(currentUser)); }
+    function loadCurrentSession() {
+        const sess = localStorage.getItem("traderx_currentUser");
+        if(sess) {
+            currentUser = JSON.parse(sess);
+            const found = users.find(u => u.id === currentUser.id);
+            if(found) currentUser = found;
+            else currentUser = null;
         }
     }
 
-    // Fungsi utama: update pips dan profit
-    function updatePipsAndProfit() {
-        const entry = parseFloat(document.getElementById("hargaMasuk").value);
-        const exit = parseFloat(document.getElementById("hargaKeluar").value);
-        const lot = parseFloat(document.getElementById("lot").value);
-        const arah = document.getElementById("arah").value;
-        const pair = document.getElementById("pasangan").value;
-        
-        let pips = 0, pl = 0;
-        if (!isNaN(entry) && !isNaN(exit) && !isNaN(lot) && lot > 0 && pair.trim() !== "") {
-            pips = calculatePips(entry, exit, arah, pair);
-            pl = calculateProfitFromPips(pips, lot);
-        }
-        document.getElementById("pips").value = pips.toFixed(1);
-        document.getElementById("profitLossManual").value = formatNumberUSD(pl);
-        return { pips, pl };
+    // Helper: update user in users array
+    function updateUserInArray(updatedUser) {
+        const idx = users.findIndex(u => u.id === updatedUser.id);
+        if(idx !== -1) users[idx] = updatedUser;
+        saveUsers();
+        if(currentUser && currentUser.id === updatedUser.id) currentUser = updatedUser;
+        saveCurrentUser();
     }
 
-    function bindAutoCalculations() {
-        const fields = ['hargaMasuk', 'hargaKeluar', 'lot', 'arah', 'pasangan'];
-        fields.forEach(id => {
-            const el = document.getElementById(id);
-            el.addEventListener('input', () => {
-                if (id === 'pasangan') updatePairDetect();
-                updatePipsAndProfit();
+    // Journal functions
+    function addJournalEntry(pair, entry, exit, lots) {
+        if(!currentUser) return;
+        const profit = (exit - entry) * lots * 100; // simplified USD
+        const newEntry = { id: Date.now(), pair, entry, exit, lots, profit, date: new Date().toISOString() };
+        if(!currentUser.journalEntries) currentUser.journalEntries = [];
+        currentUser.journalEntries.unshift(newEntry);
+        updateUserInArray(currentUser);
+        renderJournalPage();
+        renderDashboardPage(); // update chart & stats
+        showToast(`Trade added: ${profit>=0 ? '+' : ''}$${profit.toFixed(2)}`);
+    }
+    function deleteJournalEntry(id) {
+        if(!currentUser) return;
+        currentUser.journalEntries = currentUser.journalEntries.filter(e => e.id !== id);
+        updateUserInArray(currentUser);
+        renderJournalPage();
+        renderDashboardPage();
+    }
+
+    // Dashboard Stats
+    function getTotalPnL() {
+        if(!currentUser || !currentUser.journalEntries) return 0;
+        return currentUser.journalEntries.reduce((sum, e) => sum + e.profit, 0);
+    }
+    function getTodayPnL() {
+        if(!currentUser || !currentUser.journalEntries) return 0;
+        const today = new Date().toDateString();
+        return currentUser.journalEntries.filter(e => new Date(e.date).toDateString() === today).reduce((s, e) => s + e.profit, 0);
+    }
+    function getWeeklyReturn() {
+        const total = getTotalPnL();
+        const balance = 10000 + total;
+        return ((total / 10000) * 100).toFixed(1);
+    }
+
+    // Chart data: cumulative equity curve
+    function getEquityCurve() {
+        let cumulative = 10000;
+        let points = [{label: 'Start', balance: cumulative}];
+        if(currentUser && currentUser.journalEntries) {
+            const sorted = [...currentUser.journalEntries].reverse();
+            sorted.forEach(e => {
+                cumulative += e.profit;
+                points.push({label: e.pair, balance: cumulative});
             });
-            el.addEventListener('change', () => {
-                if (id === 'pasangan') updatePairDetect();
-                updatePipsAndProfit();
+        }
+        return points;
+    }
+
+    function renderDashboardChart() {
+        const canvas = document.getElementById("equityCanvas");
+        if(!canvas) return;
+        const ctx = canvas.getContext("2d");
+        const data = getEquityCurve();
+        const labels = data.map(p => p.label.length>6 ? p.label.slice(0,5) : p.label);
+        const balances = data.map(p => p.balance);
+        if(chartInstance) chartInstance.destroy();
+        chartInstance = new Chart(ctx, {
+            type: 'line',
+            data: { labels, datasets: [{ label: 'Equity ($)', data: balances, borderColor: '#00E6B2', backgroundColor: 'rgba(0,230,178,0.05)', borderWidth: 3, fill: true, tension: 0.3 }] },
+            options: { responsive: true, maintainAspectRatio: true }
+        });
+    }
+
+    // Activity simulation
+    let activityInterval;
+    function startActivitySimulation() {
+        if(activityInterval) clearInterval(activityInterval);
+        activityInterval = setInterval(() => {
+            const msgs = ["🔥 23 traders joined today", "⚡ Last signal profit +$320", "📈 BTC volatility spike", "💎 Premium signal just released", "🎯 Winrate improved to 68%"];
+            const randomMsg = msgs[Math.floor(Math.random() * msgs.length)];
+            activityFeed.unshift(randomMsg);
+            if(activityFeed.length > 6) activityFeed.pop();
+            renderDashboardPage();
+        }, 8000);
+    }
+
+    // ---------- RENDER PAGES ----------
+    function renderDashboardPage() {
+        const container = document.getElementById("dashboardPage");
+        const totalPnL = getTotalPnL();
+        const todayPnL = getTodayPnL();
+        const weeklyReturn = getWeeklyReturn();
+        const balance = 10000 + totalPnL;
+        const premiumBadge = currentUser?.premium ? '<span class="badge" style="background:#FFB34720;color:#FFB347;"><i class="fas fa-crown"></i> PREMIUM</span>' : '<span class="badge">FREE</span>';
+        const activityHtml = activityFeed.slice(0,4).map(a => `<div class="flex-between" style="margin-bottom:8px;"><span>🔔 ${a}</span></div>`).join('');
+        container.innerHTML = `
+            <div class="card"><div class="flex-between"><div><h2>Welcome back, ${currentUser?.name}</h2>${premiumBadge}</div><i class="fas fa-chart-line" style="font-size:32px;color:#2A6DFF;"></i></div></div>
+            <div class="card"><div class="flex-between"><span>💰 Total Balance</span><span class="profit-text">$${balance.toFixed(2)}</span></div>
+            <div class="flex-between"><span>📈 Today P&L</span><span class="${todayPnL>=0?'profit-text':'loss-text'}">${todayPnL>=0?'+':''}$${todayPnL.toFixed(2)}</span></div>
+            <div class="flex-between"><span>📊 Weekly Return</span><span class="${weeklyReturn>=0?'profit-text':'loss-text'}">${weeklyReturn}%</span></div><hr>
+            <canvas id="equityCanvas" height="150"></canvas></div>
+            <div class="card"><h3>🔥 FOMO Updates</h3><div>🚀 23 traders joined today</div><div>⚡ Last signal profit +$320</div><div>💎 Premium signals winrate 78%</div></div>
+            <div class="card"><h3>📺 Mentor's Picks</h3><div class="scroll-x" id="mentorVideos"></div></div>
+            <div class="card"><h3>📰 News Preview</h3><div id="newsPreviewDash"></div></div>
+            <div class="card"><h3>👑 Mentor Section</h3><div><i class="fas fa-user-tie"></i> Trader X | 7+ Years Experience</div><div>🎯 Proprietary strategy with 70% winrate</div></div>
+            <div class="card"><h3>⚡ Live Activity</h3>${activityHtml}</div>
+            <div class="grid-2"><button class="glass-btn primary" id="quickJournalBtn"><i class="fas fa-plus-circle"></i> Add Trade</button>
+            <button class="glass-btn" id="quickSignalBtn"><i class="fas fa-chart-line"></i> Signals</button></div>
+        `;
+        // Render mentor videos (YouTube)
+        const mentorVideos = [
+            { id: "dQw4w9WgXcQ", title: "Smart Money" }, { id: "JfVOs4VSpmA", title: "Risk Management" }
+        ];
+        const vidContainer = document.getElementById("mentorVideos");
+        if(vidContainer) vidContainer.innerHTML = mentorVideos.map(v => `<div class="video-card"><iframe src="https://www.youtube.com/embed/${v.id}?autoplay=0&mute=1" allowfullscreen></iframe><div style="padding:8px">${v.title}</div></div>`).join('');
+        const newsPreviewDiv = document.getElementById("newsPreviewDash");
+        if(newsPreviewDiv) newsPreviewDiv.innerHTML = newsArticles.slice(0,2).map(n => `<div class="flex-between"><img src="${n.image}" width="40" height="40" style="border-radius:12px"><div><b>${n.title}</b><br><small>${n.date}</small></div></div>`).join('');
+        renderDashboardChart();
+        document.getElementById("quickJournalBtn")?.addEventListener("click", ()=> switchPage("journal"));
+        document.getElementById("quickSignalBtn")?.addEventListener("click", ()=> switchPage("signal"));
+    }
+
+    function renderSignalPage() {
+        const container = document.getElementById("signalPage");
+        let html = `<div class="card"><h2>📡 Live Trading Signals</h2><p>Confidence & real-time status</p></div>`;
+        signals.forEach(sig => {
+            const isLocked = sig.premium && !currentUser?.premium;
+            if(isLocked) {
+                html += `<div class="signal-card premium-blur" style="filter: blur(5px);"><div class="flex-between"><span><i class="fas fa-lock"></i> ${sig.pair}</span><span class="badge">🔒 Premium</span></div><div>Entry: ${sig.entry} | TP: ${sig.tp} | SL: ${sig.sl}</div><div>Confidence ${sig.confidence}%</div><div>Status: ${sig.status}</div></div>`;
+            } else {
+                html += `<div class="signal-card"><div class="flex-between"><span><b>${sig.pair}</b></span><span class="badge">${sig.status}</span></div><div>Entry: ${sig.entry} | TP: ${sig.tp} | SL: ${sig.sl}</div><div>Confidence: ${sig.confidence}% | ⏳ ${sig.timeLeft}</div></div>`;
+            }
+        });
+        if(!currentUser?.premium) html += `<div class="card" style="text-align:center"><button class="glass-btn primary" id="upgradeSignalBtn">🔓 Unlock Premium Signals →</button></div>`;
+        container.innerHTML = html;
+        document.getElementById("upgradeSignalBtn")?.addEventListener("click", ()=> switchPage("membership"));
+    }
+
+    function renderEducationPage() {
+        const container = document.getElementById("educationPage");
+        let modulesHtml = '';
+        educationModules.forEach(mod => {
+            const isLocked = mod.premium && !currentUser?.premium;
+            if(isLocked) {
+                modulesHtml += `<div class="module-card premium-blur" style="filter: blur(4px);"><div class="flex-between"><span><i class="fas fa-lock"></i> ${mod.title}</span><span>🔒</span></div><p>${mod.desc}</p></div>`;
+            } else {
+                modulesHtml += `<div class="module-card"><div class="flex-between"><span><b>${mod.title}</b></span><i class="fas fa-play-circle" style="color:#2A6DFF"></i></div><p>${mod.desc}</p><iframe width="100%" height="120" src="https://www.youtube.com/embed/${mod.videoId}?autoplay=0" style="border-radius:16px; margin-top:8px;"></iframe></div>`;
+            }
+        });
+        if(!currentUser?.premium) modulesHtml += `<div class="card"><button class="glass-btn primary" id="upgradeEduBtn">🎓 Unlock All Premium Modules</button></div>`;
+        container.innerHTML = `<div class="card"><h3>📚 Trader X Academy</h3><p>Master the markets</p></div>${modulesHtml}`;
+        document.getElementById("upgradeEduBtn")?.addEventListener("click", ()=> switchPage("membership"));
+    }
+
+    function renderJournalPage() {
+        const container = document.getElementById("journalPage");
+        let journalHtml = `<div class="card"><h3>➕ Add Trade</h3><input id="tradePair" placeholder="Pair (BTC/USD)"><input id="entryPrice" type="number" placeholder="Entry Price"><input id="exitPrice" type="number" placeholder="Exit Price"><input id="lots" type="number" placeholder="Lots (0.01)"><button class="glass-btn primary" id="addTradeBtn">Add & Calculate P/L</button></div>`;
+        journalHtml += `<div class="card"><h3>📜 Trade History</h3>`;
+        if(currentUser?.journalEntries && currentUser.journalEntries.length) {
+            currentUser.journalEntries.forEach(entry => {
+                journalHtml += `<div class="journal-item"><div><b>${entry.pair}</b> | Entry:${entry.entry} Exit:${entry.exit} Lots:${entry.lots}<br><span class="${entry.profit>=0?'profit-text':'loss-text'}">${entry.profit>=0?'+':''}$${entry.profit.toFixed(2)}</span><br><small>${new Date(entry.date).toLocaleString()}</small></div><button class="deleteJournalBtn" data-id="${entry.id}"><i class="fas fa-trash"></i></button></div>`;
             });
+        } else journalHtml += `<div>No trades yet</div>`;
+        journalHtml += `</div>`;
+        container.innerHTML = journalHtml;
+        document.getElementById("addTradeBtn")?.addEventListener("click", () => {
+            const pair = document.getElementById("tradePair").value;
+            const entry = parseFloat(document.getElementById("entryPrice").value);
+            const exit = parseFloat(document.getElementById("exitPrice").value);
+            const lots = parseFloat(document.getElementById("lots").value);
+            if(pair && !isNaN(entry) && !isNaN(exit) && !isNaN(lots)) addJournalEntry(pair, entry, exit, lots);
+            else showToast("Invalid trade data");
+            renderJournalPage();
         });
-        updatePairDetect();
-        updatePipsAndProfit();
+        document.querySelectorAll(".deleteJournalBtn").forEach(btn => btn.addEventListener("click", (e) => deleteJournalEntry(parseInt(btn.dataset.id))));
     }
 
-    function setTodayDate() {
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const day = String(today.getDate()).padStart(2, '0');
-        document.getElementById("tanggal").value = `${year}-${month}-${day}`;
-    }
-
-    function computeNetProfitAndStatus(trade) {
-        let pl = parseFloat(trade.profitLossManualRaw) || 0;
-        let komisi = parseFloat(trade.komisi) || 0;
-        let swap = parseFloat(trade.swap) || 0;
-        let net = calculateNetProfit(pl, komisi, swap);
-        trade.netProfit = net;
-        trade.status = net > 0 ? "Win" : (net < 0 ? "Loss" : "Breakeven");
-        return trade;
-    }
-
-    function saveTrades() {
-        localStorage.setItem("tradingJournalFixed", JSON.stringify(trades));
-        renderStats();
-        renderTable();
-    }
-
-    function loadTrades() {
-        const stored = localStorage.getItem("tradingJournalFixed");
-        if(stored) {
-            try {
-                trades = JSON.parse(stored);
-                trades = trades.map(t => computeNetProfitAndStatus(t));
-            } catch(e) { trades = []; }
-        } else {
-            trades = [];
-        }
-        renderStats();
-        renderTable();
-    }
-
-    function addOrUpdateTrade(formData) {
-        if(editIndex !== null) {
-            let updated = { ...formData };
-            updated = computeNetProfitAndStatus(updated);
-            trades[editIndex] = updated;
-            editIndex = null;
-            document.getElementById("submitBtn").innerHTML = "➕ Tambah Transaksi";
-            document.getElementById("cancelEditBtn").style.display = "none";
-        } else {
-            let newTrade = { ...formData };
-            newTrade = computeNetProfitAndStatus(newTrade);
-            trades.push(newTrade);
-        }
-        saveTrades();
-        resetForm();
-    }
-
-    function resetForm() {
-        document.getElementById("tradeForm").reset();
-        setTodayDate();
-        document.getElementById("pips").value = "";
-        document.getElementById("profitLossManual").value = "";
-        document.getElementById("komisi").value = "0";
-        document.getElementById("swap").value = "0";
-        document.getElementById("lot").value = "";
-        document.getElementById("hargaMasuk").value = "";
-        document.getElementById("hargaKeluar").value = "";
-        document.getElementById("pasangan").value = "";
-        editIndex = null;
-        document.getElementById("submitBtn").innerHTML = "➕ Tambah Transaksi";
-        document.getElementById("cancelEditBtn").style.display = "none";
-        updatePairDetect();
-        updatePipsAndProfit();
-    }
-
-    function editTrade(index) {
-        const t = trades[index];
-        if(!t) return;
-        document.getElementById("tanggal").value = t.tanggal || "";
-        document.getElementById("pasangan").value = t.pasangan || "";
-        document.getElementById("arah").value = t.arah || "Buy";
-        document.getElementById("hargaMasuk").value = t.hargaMasuk ?? "";
-        document.getElementById("hargaKeluar").value = t.hargaKeluar ?? "";
-        document.getElementById("lot").value = t.lot ?? "";
-        document.getElementById("pips").value = t.pips ?? "";
-        document.getElementById("profitLossManual").value = formatNumberUSD(t.profitLossManualRaw);
-        document.getElementById("komisi").value = t.komisi ?? 0;
-        document.getElementById("swap").value = t.swap ?? 0;
-        document.getElementById("strategi").value = t.strategi || "";
-        document.getElementById("catatan").value = t.catatan || "";
-        editIndex = index;
-        document.getElementById("submitBtn").innerHTML = "✏️ Simpan Perubahan";
-        document.getElementById("cancelEditBtn").style.display = "inline-flex";
-        updatePairDetect();
-        updatePipsAndProfit();
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function deleteTrade(index) {
-        if(confirm("Hapus transaksi ini?")) {
-            trades.splice(index,1);
-            saveTrades();
-            if(editIndex === index) resetForm();
-            else if(editIndex !== null && editIndex > index) editIndex--;
-        }
-    }
-
-    function confirmClearAll() {
-        if(confirm("⚠️ Yakin ingin menghapus SEMUA data jurnal?")) {
-            trades = [];
-            saveTrades();
-            resetForm();
-        }
-    }
-
-    function renderTable() {
-        const tbody = document.getElementById("tradeTableBody");
-        if(trades.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="15" class="empty-row">📭 Belum ada data, tambahkan transaksi di atas ✍️</td></tr>';
-            return;
-        }
-        let html = "";
-        trades.forEach((trade, idx) => {
-            const net = trade.netProfit !== undefined ? trade.netProfit : 0;
-            const plRaw = trade.profitLossManualRaw || 0;
-            const pips = trade.pips !== undefined ? trade.pips : 0;
-            const komisi = trade.komisi || 0;
-            const swap = trade.swap || 0;
-            
-            let statusClass = "";
-            let statusText = trade.status || (net>0?"Win":net<0?"Loss":"Breakeven");
-            if(statusText === "Win") statusClass = "win";
-            else if(statusText === "Loss") statusClass = "loss";
-            else statusClass = "neutral";
-            
-            html += `<tr>
-                <td>${trade.tanggal || "-"}</td>
-                <td>${trade.pasangan || "-"}</td>
-                <td>${trade.arah || "-"}</td>
-                <td>${trade.hargaMasuk ?? "-"}</td>
-                <td>${trade.hargaKeluar ?? "-"}</td>
-                <td>${trade.lot ?? "-"}</td>
-                <td class="numeric">${pips.toFixed(1)}</td>
-                <td class="numeric">${formatUSD(plRaw)}</td>
-                <td class="numeric">${formatUSD(komisi)}</td>
-                <td class="numeric">${formatUSD(swap)}</td>
-                <td class="numeric"><strong>${formatUSD(net)}</strong></td>
-                <td>${trade.strategi || "-"}</td>
-                <td><span class="${statusClass}">${statusText}</span></td>
-                <td style="max-width:150px; overflow-x:auto;">${trade.catatan || "-"}</td>
-                <td>
-                    <button class="btn-icon" onclick="editTrade(${idx})">✏️ Edit</button>
-                    <button class="btn-icon delete-icon" onclick="deleteTrade(${idx})">🗑️</button>
-                </td>
-            </tr>`;
+    function renderCalculatorPage() {
+        const container = document.getElementById("calculatorPage");
+        container.innerHTML = `<div class="card"><h3>🧮 Trading Calculator</h3><label>Balance ($)</label><input id="calcBalance" type="number" value="10000"><label>Risk %</label><input id="calcRisk" type="number" value="1.5"><label>Entry Price</label><input id="calcEntry" type="number" value="1.0925"><label>Stop Loss</label><input id="calcSL" type="number" value="1.0880"><div class="glass-btn" id="computeRiskBtn">Calculate</div><div id="calcResult" style="margin-top:20px; background:#1A2A44; padding:16px; border-radius:24px;"></div></div>`;
+        document.getElementById("computeRiskBtn")?.addEventListener("click", () => {
+            const balance = parseFloat(document.getElementById("calcBalance").value);
+            const riskPct = parseFloat(document.getElementById("calcRisk").value);
+            const entry = parseFloat(document.getElementById("calcEntry").value);
+            const sl = parseFloat(document.getElementById("calcSL").value);
+            if(isNaN(balance) || isNaN(riskPct) || isNaN(entry) || isNaN(sl)) return;
+            const riskAmount = balance * (riskPct / 100);
+            const distance = Math.abs(entry - sl);
+            const lotSize = riskAmount / (distance * 1000);
+            document.getElementById("calcResult").innerHTML = `<div>💰 Risk Amount: $${riskAmount.toFixed(2)}</div><div>📏 Distance: ${distance} pips</div><div>⚖️ Suggested Lot Size: ${lotSize.toFixed(3)} lots</div>`;
         });
-        tbody.innerHTML = html;
     }
 
-    function renderStats() {
-        const total = trades.length;
-        let wins = trades.filter(t => t.netProfit > 0).length;
-        let winRate = total === 0 ? 0 : (wins / total) * 100;
-        let totalNet = trades.reduce((sum, t) => sum + (t.netProfit || 0), 0);
-        document.getElementById("totalTrades").innerText = total;
-        document.getElementById("winRate").innerText = winRate.toFixed(1) + "%";
-        document.getElementById("totalNetProfit").innerHTML = formatUSD(totalNet);
-        
-        let avgProfit = trades.filter(t=>t.netProfit>0).reduce((a,b)=>a+(b.netProfit||0),0) / (wins||1);
-        let lossTrades = trades.filter(t=>t.netProfit<0);
-        let avgLoss = lossTrades.length > 0 ? Math.abs(lossTrades.reduce((a,b)=>a+(b.netProfit||0),0) / lossTrades.length) : 0;
-        let rr = (avgProfit && avgLoss && avgLoss !== 0) ? (avgProfit/avgLoss).toFixed(2) : "-";
-        document.getElementById("avgRR").innerText = (rr !== "-" && rr !== "Infinity") ? rr : "-";
+    function renderNewsPage() {
+        const container = document.getElementById("newsPage");
+        container.innerHTML = `<div class="card"><h3>📰 Financial News</h3></div>${newsArticles.map(n => `<div class="card" style="display:flex; gap:16px;"><img src="${n.image}" width="60" height="60" style="border-radius:20px"><div><b>${n.title}</b><p>${n.desc}</p><small>${n.date}</small></div></div>`).join('')}`;
     }
 
-    function exportToCSV() {
-        if(trades.length === 0) {
-            alert("Tidak ada data untuk diexport.");
-            return;
-        }
-        const headers = ["Tanggal","Pasangan","Arah","Harga Masuk","Harga Keluar","Lot","Pips","Profit/Loss (USD)","Komisi","Swap","Net Profit","Strategi","Status","Catatan"];
-        const rows = trades.map(t => [
-            t.tanggal, t.pasangan, t.arah, t.hargaMasuk, t.hargaKeluar, t.lot,
-            t.pips, t.profitLossManualRaw, t.komisi, t.swap, t.netProfit, t.strategi, t.status, t.catatan
-        ]);
-        let csvContent = headers.map(h => `"${h}"`).join(",") + "\n";
-        rows.forEach(row => {
-            let escapedRow = row.map(cell => {
-                if(cell === undefined || cell === null) return "";
-                let str = String(cell);
-                if(str.includes(",") || str.includes("\"")) str = str.replace(/"/g, '""');
-                return `"${str}"`;
-            }).join(",");
-            csvContent += escapedRow + "\n";
+    function renderProfilePage() {
+        const container = document.getElementById("profilePage");
+        container.innerHTML = `<div class="card" style="text-align:center"><i class="fas fa-user-astronaut fa-4x"></i><h2>${currentUser?.name}</h2><p>${currentUser?.email}</p><span class="badge">${currentUser?.premium ? "✨ PREMIUM" : "⭐ FREE"}</span></div>
+        <div class="card"><label>Edit Name</label><input id="editNameInput" value="${currentUser?.name}"><button class="glass-btn primary" id="saveProfileBtn">Save Changes</button><hr><button class="glass-btn" id="upgradeProfileBtn">💎 Upgrade Membership</button><button class="glass-btn" id="logoutBtn">Logout</button></div>`;
+        document.getElementById("saveProfileBtn")?.addEventListener("click", () => {
+            const newName = document.getElementById("editNameInput").value;
+            if(newName && currentUser) { currentUser.name = newName; updateUserInArray(currentUser); renderProfilePage(); renderDashboardPage(); showToast("Profile updated"); }
         });
-        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-        const link = document.createElement("a");
-        const url = URL.createObjectURL(blob);
-        link.href = url;
-        link.setAttribute("download", "jurnal_trading.csv");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+        document.getElementById("upgradeProfileBtn")?.addEventListener("click", () => switchPage("membership"));
+        document.getElementById("logoutBtn")?.addEventListener("click", () => { localStorage.removeItem("traderx_currentUser"); window.location.reload(); });
     }
 
-    function getFormData() {
-        const pipsVal = parseFloat(document.getElementById("pips").value) || 0;
-        const lotVal = parseFloat(document.getElementById("lot").value) || 0;
-        const plRaw = calculateProfitFromPips(pipsVal, lotVal);
-        
-        return {
-            tanggal: document.getElementById("tanggal").value,
-            pasangan: document.getElementById("pasangan").value,
-            arah: document.getElementById("arah").value,
-            hargaMasuk: parseFloat(document.getElementById("hargaMasuk").value) || null,
-            hargaKeluar: parseFloat(document.getElementById("hargaKeluar").value) || null,
-            lot: lotVal,
-            pips: pipsVal,
-            profitLossManualRaw: plRaw,
-            profitLossManual: plRaw,
-            komisi: parseFloat(document.getElementById("komisi").value) || 0,
-            swap: parseFloat(document.getElementById("swap").value) || 0,
-            strategi: document.getElementById("strategi").value,
-            catatan: document.getElementById("catatan").value,
-        };
+    function renderMembershipPage() {
+        const container = document.getElementById("membershipPage");
+        container.innerHTML = `<div class="card"><h3>💎 Membership Plans</h3><p>Upgrade to premium and unlock all signals, education modules, and advanced features.</p></div>
+        <div class="card"><div class="flex-between"><span>📆 Monthly Premium</span><span>$29.99/mo</span></div><button class="glass-btn primary" id="upgradeMonthlyBtn">Upgrade Monthly</button></div>
+        <div class="card"><div class="flex-between"><span>⚡ Lifetime Access</span><span>$199 one-time</span></div><button class="glass-btn primary" id="upgradeLifetimeBtn">Get Lifetime</button></div>`;
+        document.getElementById("upgradeMonthlyBtn")?.addEventListener("click", () => { if(currentUser) { currentUser.premium = true; updateUserInArray(currentUser); showToast("Premium Activated! Refresh pages."); renderMembershipPage(); renderDashboardPage(); renderSignalPage(); renderEducationPage(); } });
+        document.getElementById("upgradeLifetimeBtn")?.addEventListener("click", () => { if(currentUser) { currentUser.premium = true; updateUserInArray(currentUser); showToast("Lifetime Premium Unlocked!"); renderMembershipPage(); renderDashboardPage(); renderSignalPage(); renderEducationPage(); } });
     }
 
-    document.getElementById("tradeForm").addEventListener("submit", (e) => {
-        e.preventDefault();
-        const formData = getFormData();
-        if(!formData.tanggal) {
-            alert("Tanggal wajib diisi!");
-            return;
-        }
-        if(!formData.pasangan.trim()) {
-            alert("Pasangan wajib diisi!");
-            return;
-        }
-        if(formData.hargaMasuk === null || formData.hargaKeluar === null) {
-            alert("Harga Masuk dan Harga Keluar harus diisi.");
-            return;
-        }
-        if(formData.lot === null || formData.lot === 0) {
-            alert("Lot harus diisi (min 0.01).");
-            return;
-        }
-        if(formData.lot < 0.01 || formData.lot > 100) {
-            alert("Lot harus antara 0.01 dan 100.");
-            return;
-        }
-        addOrUpdateTrade(formData);
-    });
+    function switchPage(pageId) {
+        document.querySelectorAll(".page").forEach(p => p.classList.remove("active-page"));
+        document.getElementById(`${pageId}Page`).classList.add("active-page");
+        if(pageId === "dashboard") renderDashboardPage();
+        else if(pageId === "signal") renderSignalPage();
+        else if(pageId === "education") renderEducationPage();
+        else if(pageId === "journal") renderJournalPage();
+        else if(pageId === "calculator") renderCalculatorPage();
+        else if(pageId === "news") renderNewsPage();
+        else if(pageId === "profile") renderProfilePage();
+        else if(pageId === "membership") renderMembershipPage();
+        closeSidebar();
+    }
 
-    document.getElementById("cancelEditBtn").addEventListener("click", () => {
-        resetForm();
-    });
-    document.getElementById("exportExcelBtn").addEventListener("click", exportToCSV);
-    document.getElementById("printPdfBtn").addEventListener("click", () => {
-        window.print();
-    });
-    document.getElementById("clearAllBtn").addEventListener("click", confirmClearAll);
+    function closeSidebar() { document.getElementById("sidebar").classList.remove("open"); document.getElementById("sidebarOverlay").style.display = "none"; }
+    function openSidebar() { document.getElementById("sidebar").classList.add("open"); document.getElementById("sidebarOverlay").style.display = "block"; }
+    function showToast(msg) { const t = document.createElement("div"); t.className = "toast-msg"; t.innerHTML = `<i class="fas fa-bell"></i> ${msg}`; document.body.appendChild(t); setTimeout(() => t.remove(), 2500); }
 
-    setTodayDate();
-    bindAutoCalculations();
-    loadTrades();
+    // Auth handling
+    function afterLogin(user) {
+        currentUser = user;
+        saveCurrentUser();
+        document.getElementById("authContainer").style.display = "none";
+        document.getElementById("mainApp").style.display = "block";
+        initData();
+        startActivitySimulation();
+        renderDashboardPage();
+        switchPage("dashboard");
+    }
+    document.getElementById("doLoginBtn")?.addEventListener("click", () => {
+        const email = document.getElementById("loginEmail").value;
+        const pwd = document.getElementById("loginPassword").value;
+        const user = users.find(u => u.email === email && u.password === pwd);
+        if(user) afterLogin(user);
+        else showToast("Invalid credentials");
+    });
+    document.getElementById("doRegisterBtn")?.addEventListener("click", () => {
+        const name = document.getElementById("regName").value;
+        const email = document.getElementById("regEmail").value;
+        const pwd = document.getElementById("regPassword").value;
+        if(!name || !email || !pwd) return showToast("Fill all fields");
+        if(users.find(u => u.email === email)) return showToast("Email exists");
+        const newUser = { id: Date.now(), name, email, password: pwd, premium: false, journalEntries: [] };
+        users.push(newUser);
+        saveUsers();
+        afterLogin(newUser);
+    });
+    document.getElementById("showRegisterBtn")?.addEventListener("click", () => { document.getElementById("loginForm").style.display = "none"; document.getElementById("registerForm").style.display = "block"; });
+    document.getElementById("showLoginBtn")?.addEventListener("click", () => { document.getElementById("registerForm").style.display = "none"; document.getElementById("loginForm").style.display = "block"; });
+    document.getElementById("menuToggleBtn")?.addEventListener("click", openSidebar);
+    document.getElementById("sidebarOverlay")?.addEventListener("click", closeSidebar);
+    document.getElementById("notifBellBtn")?.addEventListener("click", () => showToast("🔔 New signal: BTC breakout incoming"));
+    document.querySelectorAll(".sidebar-item[data-page]").forEach(el => el.addEventListener("click", () => switchPage(el.dataset.page)));
+    document.getElementById("sidebarMembership")?.addEventListener("click", () => switchPage("membership"));
+    // Initial load
+    loadUsers();
+    loadCurrentSession();
+    if(currentUser) {
+        document.getElementById("authContainer").style.display = "none";
+        document.getElementById("mainApp").style.display = "block";
+        initData();
+        startActivitySimulation();
+        renderDashboardPage();
+        switchPage("dashboard");
+    } else {
+        document.getElementById("authContainer").style.display = "flex";
+        document.getElementById("mainApp").style.display = "none";
+    }
 </script>
 </body>
 </html>
