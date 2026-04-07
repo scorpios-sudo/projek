@@ -33,7 +33,7 @@
             box-shadow: 0 0 50px rgba(0,0,0,0.8);
             position: relative;
             padding-top: 70px;
-            padding-bottom: 30px;
+            padding-bottom: 80px; /* space for bottom nav */
         }
 
         /* Scrollbar */
@@ -135,6 +135,42 @@
             border: 1px solid #FFB347;
             margin-top: auto;
             color: #FFD966;
+        }
+
+        /* BOTTOM NAVIGATION (NEW) */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 500px;
+            margin: 0 auto;
+            background: rgba(12, 16, 24, 0.92);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 16px 22px;
+            border-top: 1px solid rgba(42, 109, 255, 0.3);
+            z-index: 100;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            background: transparent;
+            border: none;
+            color: #8E9AAF;
+            font-size: 11px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .nav-item i { font-size: 22px; }
+        .nav-item.active { 
+            color: #2A6DFF; 
+            text-shadow: 0 0 8px rgba(42,109,255,0.6); 
+            transform: translateY(-3px); 
         }
 
         /* Pages */
@@ -276,7 +312,7 @@
         }
         input:focus { border-color: #2A6DFF; outline: none; }
 
-        /* Login/Register */
+        /* Auth */
         .auth-container {
             max-width: 500px;
             margin: 0 auto;
@@ -326,6 +362,7 @@
 <!-- MAIN APP (after login) -->
 <div id="mainApp" style="display: none;">
     <div class="app-container">
+        <!-- Top Navbar -->
         <div class="top-navbar">
             <button id="menuToggleBtn"><i class="fas fa-bars"></i></button>
             <div class="logo">TRADER X ACADEMY</div>
@@ -355,13 +392,22 @@
         <div id="newsPage" class="page"></div>
         <div id="profilePage" class="page"></div>
         <div id="membershipPage" class="page"></div>
+
+        <!-- BOTTOM NAVIGATION BAR (NEW) -->
+        <div class="bottom-nav">
+            <button class="nav-item" data-nav="dashboard"><i class="fas fa-home"></i><span>Home</span></button>
+            <button class="nav-item" data-nav="signal"><i class="fas fa-chart-line"></i><span>Signals</span></button>
+            <button class="nav-item" data-nav="journal"><i class="fas fa-book-open"></i><span>Journal</span></button>
+            <button class="nav-item" data-nav="news"><i class="fas fa-newspaper"></i><span>News</span></button>
+            <button class="nav-item" data-nav="profile"><i class="fas fa-user"></i><span>Profile</span></button>
+        </div>
     </div>
 </div>
 
 <script>
     // ---------- DATA & STATE ----------
-    let currentUser = null;          // { id, name, email, premium, journalEntries }
-    let users = [];                  // stored in localStorage
+    let currentUser = null;
+    let users = [];
     let signals = [];
     let educationModules = [];
     let newsArticles = [];
@@ -412,7 +458,6 @@
         }
     }
 
-    // Helper: update user in users array
     function updateUserInArray(updatedUser) {
         const idx = users.findIndex(u => u.id === updatedUser.id);
         if(idx !== -1) users[idx] = updatedUser;
@@ -424,13 +469,13 @@
     // Journal functions
     function addJournalEntry(pair, entry, exit, lots) {
         if(!currentUser) return;
-        const profit = (exit - entry) * lots * 100; // simplified USD
+        const profit = (exit - entry) * lots * 100; 
         const newEntry = { id: Date.now(), pair, entry, exit, lots, profit, date: new Date().toISOString() };
         if(!currentUser.journalEntries) currentUser.journalEntries = [];
         currentUser.journalEntries.unshift(newEntry);
         updateUserInArray(currentUser);
         renderJournalPage();
-        renderDashboardPage(); // update chart & stats
+        renderDashboardPage();
         showToast(`Trade added: ${profit>=0 ? '+' : ''}$${profit.toFixed(2)}`);
     }
     function deleteJournalEntry(id) {
@@ -441,7 +486,6 @@
         renderDashboardPage();
     }
 
-    // Dashboard Stats
     function getTotalPnL() {
         if(!currentUser || !currentUser.journalEntries) return 0;
         return currentUser.journalEntries.reduce((sum, e) => sum + e.profit, 0);
@@ -457,7 +501,6 @@
         return ((total / 10000) * 100).toFixed(1);
     }
 
-    // Chart data: cumulative equity curve
     function getEquityCurve() {
         let cumulative = 10000;
         let points = [{label: 'Start', balance: cumulative}];
@@ -486,7 +529,6 @@
         });
     }
 
-    // Activity simulation
     let activityInterval;
     function startActivitySimulation() {
         if(activityInterval) clearInterval(activityInterval);
@@ -499,7 +541,7 @@
         }, 8000);
     }
 
-    // ---------- RENDER PAGES ----------
+    // ---------- RENDER PAGES (same as before, but we keep all) ----------
     function renderDashboardPage() {
         const container = document.getElementById("dashboardPage");
         const totalPnL = getTotalPnL();
@@ -522,10 +564,7 @@
             <div class="grid-2"><button class="glass-btn primary" id="quickJournalBtn"><i class="fas fa-plus-circle"></i> Add Trade</button>
             <button class="glass-btn" id="quickSignalBtn"><i class="fas fa-chart-line"></i> Signals</button></div>
         `;
-        // Render mentor videos (YouTube)
-        const mentorVideos = [
-            { id: "dQw4w9WgXcQ", title: "Smart Money" }, { id: "JfVOs4VSpmA", title: "Risk Management" }
-        ];
+        const mentorVideos = [{ id: "dQw4w9WgXcQ", title: "Smart Money" }, { id: "JfVOs4VSpmA", title: "Risk Management" }];
         const vidContainer = document.getElementById("mentorVideos");
         if(vidContainer) vidContainer.innerHTML = mentorVideos.map(v => `<div class="video-card"><iframe src="https://www.youtube.com/embed/${v.id}?autoplay=0&mute=1" allowfullscreen></iframe><div style="padding:8px">${v.title}</div></div>`).join('');
         const newsPreviewDiv = document.getElementById("newsPreviewDash");
@@ -632,9 +671,18 @@
         document.getElementById("upgradeLifetimeBtn")?.addEventListener("click", () => { if(currentUser) { currentUser.premium = true; updateUserInArray(currentUser); showToast("Lifetime Premium Unlocked!"); renderMembershipPage(); renderDashboardPage(); renderSignalPage(); renderEducationPage(); } });
     }
 
+    // ----- PAGE SWITCHING with BOTTOM NAV & SIDEBAR -----
     function switchPage(pageId) {
+        // Update pages visibility
         document.querySelectorAll(".page").forEach(p => p.classList.remove("active-page"));
         document.getElementById(`${pageId}Page`).classList.add("active-page");
+        
+        // Update bottom navigation active class
+        document.querySelectorAll(".nav-item").forEach(btn => btn.classList.remove("active"));
+        const activeNav = document.querySelector(`.nav-item[data-nav="${pageId}"]`);
+        if(activeNav) activeNav.classList.add("active");
+        
+        // Render content
         if(pageId === "dashboard") renderDashboardPage();
         else if(pageId === "signal") renderSignalPage();
         else if(pageId === "education") renderEducationPage();
@@ -643,6 +691,7 @@
         else if(pageId === "news") renderNewsPage();
         else if(pageId === "profile") renderProfilePage();
         else if(pageId === "membership") renderMembershipPage();
+        
         closeSidebar();
     }
 
@@ -650,7 +699,7 @@
     function openSidebar() { document.getElementById("sidebar").classList.add("open"); document.getElementById("sidebarOverlay").style.display = "block"; }
     function showToast(msg) { const t = document.createElement("div"); t.className = "toast-msg"; t.innerHTML = `<i class="fas fa-bell"></i> ${msg}`; document.body.appendChild(t); setTimeout(() => t.remove(), 2500); }
 
-    // Auth handling
+    // Auth handlers
     function afterLogin(user) {
         currentUser = user;
         saveCurrentUser();
@@ -684,8 +733,14 @@
     document.getElementById("menuToggleBtn")?.addEventListener("click", openSidebar);
     document.getElementById("sidebarOverlay")?.addEventListener("click", closeSidebar);
     document.getElementById("notifBellBtn")?.addEventListener("click", () => showToast("🔔 New signal: BTC breakout incoming"));
+    
+    // Sidebar menu listeners
     document.querySelectorAll(".sidebar-item[data-page]").forEach(el => el.addEventListener("click", () => switchPage(el.dataset.page)));
     document.getElementById("sidebarMembership")?.addEventListener("click", () => switchPage("membership"));
+    
+    // Bottom navigation listeners
+    document.querySelectorAll(".nav-item").forEach(btn => btn.addEventListener("click", () => switchPage(btn.dataset.nav)));
+    
     // Initial load
     loadUsers();
     loadCurrentSession();
